@@ -23,7 +23,7 @@ namespace MUDServer
             switch (status)
             {
                 case 0:
-                    interpretStart();
+                    interpretStart(message);
                     break;
                 case 1:
                     interpretLogin(message);
