@@ -1,6 +1,7 @@
 drop database if exists MUDEngine;
 Create Database MUDEngine;
 use MUDEngine; 
+
 DROP TABLE IF EXISTS `Armor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;

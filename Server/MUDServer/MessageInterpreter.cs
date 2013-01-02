@@ -14,6 +14,7 @@ namespace MUDServer
         long user_id = 42;
         string user_name = "";
         string password = "";
+        UserData _user_data;
 
         public MessageInterpreter(writemethod w)
         {
@@ -69,7 +70,7 @@ namespace MUDServer
             }
             else if (substatus == 2)
             {
-
+                _user_data = new UserData(user_name, password);
             }
             else
             {
