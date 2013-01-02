@@ -13,15 +13,15 @@ namespace MUDServer
         NetworkStream _stream;
         String client_message = "";
         byte[] bytemessage = new byte[256];
-        User _user;
+        MessageInterpreter _interpreter;
         
         public Connection(TcpClient client)
         {
             Console.WriteLine("Connected");
             _client = client;
             _stream = client.GetStream();
-            User.writemethod wm = new User.writemethod(write_message);
-            _user = new User(wm);
+            MessageInterpreter.writemethod wm = new MessageInterpreter.writemethod(write_message);
+            _interpreter = new MessageInterpreter(wm);
 
             
 
@@ -40,7 +40,7 @@ namespace MUDServer
                         string tmp = client_message.Substring(0, client_message.IndexOf('\n'));
                         client_message = client_message.Remove(0, client_message.IndexOf('\n') + 1);
                         Console.WriteLine("tmp:" + tmp);
-                        _user.interpretMessage(tmp);
+                        _interpreter.interpretMessage(tmp);
                     }
                     
                 }

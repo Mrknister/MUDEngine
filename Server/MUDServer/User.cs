@@ -5,15 +5,15 @@ using System.Text;
 
 namespace MUDServer
 {
-    class User
+    class MessageInterpreter
     {
         public delegate void writemethod(string message);
         writemethod write;
         uint status = 0;
         uint substatus = 0; // Niemals vergessen, diesen status wieder auf 0 zu setzen!
-        uint user_id = 42;
+        long user_id = 42;
 
-        public User(writemethod w)
+        public MessageInterpreter(writemethod w)
         {
             write = w;
             write("Wenn du ein neuer Nutzer bist tippe 'neu' ein. \nWenn du schon mal hier warst, tippe 'login' ein.");
@@ -50,9 +50,6 @@ namespace MUDServer
         {
         }
         private void interpretGameLoop(string Message)
-        {
-        }
-        private void showInventory(string Message)
         {
         }
     }
