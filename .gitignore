@@ -1,2 +1,6 @@
 *.autosave
 *~
+Client/MUDClient.v11.suo
+Server/MUDServer.v11.suo
+Server/bin/
+Server/obj/
