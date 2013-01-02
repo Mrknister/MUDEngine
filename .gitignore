@@ -2,5 +2,5 @@
 *~
 Client/MUDClient.v11.suo
 Server/MUDServer.v11.suo
-Server/bin/
-Server/obj/
+Server/MUDServer/bin/
+Server/MUDServer/obj/
