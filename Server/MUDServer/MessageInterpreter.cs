@@ -12,6 +12,8 @@ namespace MUDServer
         uint status = 0;
         uint substatus = 0; // Niemals vergessen, diesen status wieder auf 0 zu setzen!
         long user_id = 42;
+        string user_name = "";
+        string password = "";
 
         public MessageInterpreter(writemethod w)
         {
@@ -20,6 +22,7 @@ namespace MUDServer
         }
         public void interpretMessage(String message)
         {
+
             switch (status)
             {
                 case 0:
@@ -39,12 +42,39 @@ namespace MUDServer
                     break;
             }
         }
+
+        private void changeStatus(uint status)
+        {
+            this.status = status;
+            this.substatus = 0;
+        }
         private void interpretStart(string Message)
         {
-
+            Message = Message.ToLower();
+            if (Message.StartsWith("login"))
+            {
+                write("Gebe nun deinen Nutzernamen ein");
+                changeStatus(1);
+            }
         }
         private void interpretLogin(string Message)
         {
+            if (substatus == 0)
+            {
+                user_name = Message.Trim();
+            }
+            else if (substatus == 1)
+            {
+                password = Message;
+            }
+            else if (substatus == 2)
+            {
+
+            }
+            else
+            {
+                changeStatus(0);
+            }
         }
         private void interpretRegister(string Message)
         {
