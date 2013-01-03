@@ -17,14 +17,11 @@ namespace MUDServer
         
         public Connection(TcpClient client)
         {
-            Console.WriteLine("Connected");
+            Console.WriteLine("A client connected");
             _client = client;
             _stream = client.GetStream();
             MessageInterpreter.writemethod wm = new MessageInterpreter.writemethod(write_message);
             _interpreter = new MessageInterpreter(wm);
-
-            
-
         }
         public void Work()
         {
@@ -39,7 +36,6 @@ namespace MUDServer
                     {
                         string tmp = client_message.Substring(0, client_message.IndexOf('\n'));
                         client_message = client_message.Remove(0, client_message.IndexOf('\n') + 1);
-                        Console.WriteLine("tmp:" + tmp);
                         _interpreter.interpretMessage(tmp);
                     }
                     

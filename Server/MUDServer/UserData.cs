@@ -19,7 +19,6 @@ namespace MUDServer
             try
             {
                 DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudengineer;PWD=1234;");
-                Console.WriteLine(check_register("Jan", "12345678"));
             }
             catch (Exception e)
             {
@@ -61,12 +60,10 @@ namespace MUDServer
 
                 if (!reader.HasRows)
                 {
-                    
                     return false;
                 }
                 reader.Read();
                 U_Id = reader.GetInt64(0);
-                Console.WriteLine(U_Id);
                 reader.Close();
                 DbConnection.Close();
 
