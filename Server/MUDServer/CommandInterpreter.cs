@@ -7,8 +7,10 @@ namespace MUDServer
 {
     class CommandInterpreter
     {
-        public CommandInterpreter(long user_id)
+        UserData _userdata;
+        public CommandInterpreter(UserData data)
         {
+            this._userdata = data;
         }
     }
 }
