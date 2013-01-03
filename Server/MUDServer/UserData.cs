@@ -17,29 +17,29 @@ namespace MUDServer
 
         public UserData()
         {
-            
+
         }
         public bool login(string name, string password)
         {
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
             sql.query = "select U_Id from User where Name=? and Password=?";
-            
-             
-            
 
-            
+
+
+
+
             sql.add_parameter(name);
             sql.add_parameter(password);
             try
             {
-                
+
 
                 if (!sql.HasRows)
                 {
 
                     return false;
                 }
-                U_Id = (long) sql.result[0][0];
+                U_Id = (long)sql.result[0][0];
 
 
 
@@ -65,7 +65,6 @@ namespace MUDServer
 
         public bool register(string name, string password)
         {
-            command.Parameters.Clear();
 
             name = name.Trim();
             if (!check_register(name, password)) // check register adds the parameters to the command.
@@ -73,15 +72,14 @@ namespace MUDServer
                 return false;
             }
 
-            string query = "insert into User (Name,Password,LastLogin) values (?,?,NOW())";
-            command.CommandText = query;
-            command.ExecuteNonQuery();
-            return true;
+            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+            exec.query = "insert into User (Name,Password,LastLogin) values (?,?,NOW())";
+            Console.WriteLine(exec.error_string);
+            return exec.error;
         }
 
         private bool check_register(string name, string password)
         {
-            command.Parameters.Clear();
 
             //check if lenght of name is between 3 and 12 and password lenght > 8
             if (name.Length < 3 || name.Length > 12)
@@ -92,42 +90,22 @@ namespace MUDServer
             {
                 return false;
             }
-            
-            
-            
-            string query = "select U_Id from User where Name=?";
+
+
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query = "select U_Id from User where Name=?";
             //check if name already exist
-            command.CommandText = query;
-            OdbcParameter param;
-
-            // add name to parameters
-            param = new OdbcParameter();
-            param.DbType = DbType.String;
-            param.Value = name;
-
-            command.Parameters.Add(param);
-            try
+            exec.add_parameter(name);
+            exec.execute_query();
+            if (exec.HasRows)
             {
-                OdbcDataReader reader = command.ExecuteReader();
-
-                
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    return false;
-                }
-
-                reader.Close();
-
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine("Fehler!");
-                Console.WriteLine(e.Message);
                 return false;
             }
-
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
             return true;
         }
     }

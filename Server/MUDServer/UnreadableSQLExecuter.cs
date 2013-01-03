@@ -49,7 +49,7 @@ namespace MUDServer
         
         public bool execute_query()
         {
-            using (OdbcConnection DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;"))
+            using (OdbcConnection DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=mrknister.justdied.com; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;"))
             {
                 DbConnection.Open();
                 OdbcCommand _command = new OdbcCommand(query, DbConnection);

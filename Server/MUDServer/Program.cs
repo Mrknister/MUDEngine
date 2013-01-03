@@ -24,10 +24,9 @@ namespace MUDServer
         }
         static void Main(string[] args)
         {
-            //Server s = new Server();
-            //s.startListen();
-            test();
-            Console.ReadLine();
+            Server s = new Server();
+            s.startListen();
+
 
         }
     }
