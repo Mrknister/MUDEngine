@@ -82,6 +82,7 @@ namespace MUDServer
         {
             return true;
         }
+
         public bool register(string name, string password)
         {
             command.Parameters.Clear();
@@ -93,6 +94,8 @@ namespace MUDServer
             }
 
             string query = "insert into User (Name,Password,LastLogin) values (?,?,NOW())";
+            command.CommandText = query;
+            command.ExecuteNonQuery();
             return true;
         }
 
