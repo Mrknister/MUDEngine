@@ -79,7 +79,25 @@ namespace MUDServer
         }
         public bool register(string name, string password)
         {
+            name = name.Trim();
+            if (!check_register(name, password))
+            {
+                return false;
+            }
+            string query = "";
+            return true;
+        }
 
+        private bool check_register(string name, string password)
+        {
+            if (name.Length < 3 || name.Length > 12)
+            {
+                return false;
+            }
+            if (password.Length < 8)
+            {
+                return false;
+            }
             return true;
         }
     }

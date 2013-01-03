@@ -1,0 +1,5 @@
+login:
+ select * from User where UName=? and Password=?
+
+register:
+ ...
