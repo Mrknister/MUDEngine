@@ -11,56 +11,36 @@ namespace MUDServer
 {
     class UserData
     {
-        OdbcConnection DbConnection;
+
         long U_Id;
-        OdbcCommand command;
+
 
         public UserData()
         {
-            try
-            {
-                DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudengineer;PWD=1234;");
-                DbConnection.Open();
-                command = new OdbcCommand();
-                command.Connection = DbConnection;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            
         }
         public bool login(string name, string password)
         {
-            command.Parameters.Clear();
-            string query = "select U_Id from User where Name=? and Password=?";
-            command.CommandText = query;
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select U_Id from User where Name=? and Password=?";
+            
              
             
 
-            OdbcParameter param;
-
-            // add name to parameters
-            param = new OdbcParameter();
-            param.DbType = DbType.String;
-            param.Value = name;
-            command.Parameters.Add(param);
-
-            //add password...
-            param = new OdbcParameter();
-            param.DbType = DbType.String;
-            param.Value = password;
-            command.Parameters.Add(param);
-
+            
+            sql.add_parameter(name);
+            sql.add_parameter(password);
             try
             {
-                OdbcDataReader reader = command.ExecuteReader();
+                
 
-                if (!reader.HasRows)
+                if (!sql.HasRows)
                 {
+
                     return false;
                 }
-                reader.Read();
-                U_Id = reader.GetInt64(0);
+                U_Id = (long) sql.result[0][0];
+
 
 
             }
@@ -133,16 +113,21 @@ namespace MUDServer
                 
                 if (reader.HasRows)
                 {
+                    reader.Close();
                     return false;
                 }
+
+                reader.Close();
 
             }
             catch (Exception e)
             {
+
                 Console.WriteLine("Fehler!");
                 Console.WriteLine(e.Message);
                 return false;
             }
+
             return true;
         }
     }

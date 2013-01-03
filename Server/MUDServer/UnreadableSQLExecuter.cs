@@ -1,32 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.Odbc;
-using System.Collections.Generic;
+
 
 namespace MUDServer
 {
-    class ReadableSQLExecuter
+    class UnreadableSQLExecuter
     {
         public bool error = false;
         public string error_string = "";
         public string query;
-        public List<object[]> result;
-        public bool HasRows = false;
-
+        public int rows_affected = 0;
+        
         List<OdbcParameter> _parameters = new List<OdbcParameter>();
 
 
-        public ReadableSQLExecuter()
+        public UnreadableSQLExecuter()
         {
-
+           
         }
-
-
+        
+        
         public void add_parameter(long value)
         {
-
+            
             OdbcParameter param = new OdbcParameter();
             param.DbType = DbType.Int64;
             param.Value = value;
@@ -34,7 +34,7 @@ namespace MUDServer
         }
         public void add_parameter(string value)
         {
-
+            
             OdbcParameter param = new OdbcParameter();
             param.DbType = DbType.String;
             param.Value = value;
@@ -45,8 +45,8 @@ namespace MUDServer
         {
             _parameters.Add(param);
         }
-
-
+        
+        
         public bool execute_query()
         {
             using (OdbcConnection DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;"))
@@ -60,27 +60,7 @@ namespace MUDServer
 
                 try
                 {
-
-                    OdbcDataReader reader = _command.ExecuteReader();
-                    HasRows = reader.HasRows;
-
-                    if (reader.HasRows && reader.FieldCount > 0)
-                    {
-
-                        result = new List<object[]>();
-                        while (reader.Read())
-                        {
-                            object[] tmp = new object[reader.FieldCount];
-                            reader.GetValues(tmp);
-                            result.Add(tmp);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Empty set");
-                    }
-                    reader.Close();
-
+                    rows_affected = _command.ExecuteNonQuery();
                 }
                 catch (Exception e)
                 {

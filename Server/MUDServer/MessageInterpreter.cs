@@ -61,10 +61,55 @@ namespace MUDServer
                 write("Gebe nun deinen Nutzernamen ein");
                 changeStatus(2);
             }
+            else if (Message.StartsWith("neu"))
+            {
+                write("Gebe einen Nutzernamen ein");
+                changeStatus(1);
+            }
         }
 
         private void interpretRegister(string Message)
         {
+            if (substatus == 0)
+            {
+                user_name = Message.Trim();
+                write("Gebe nun das Passwort ein");
+                substatus++;
+            }
+            
+            else if (substatus == 1)
+            {
+                password = Message;
+                write("Gebe das Passwort erneut ein");
+                substatus++;
+            }
+            else if (substatus == 2)
+            {
+                if (password != Message)
+                {
+                    write("Die Passwörter stimmen nicht überein\n Gebe dein Passwort ein");
+                    substatus = 1;
+                    return;
+                }
+
+
+
+                this._user_data = new UserData();
+                if (this._user_data.register(user_name, password))
+                {
+                    write("Registrierung erfolgreich");
+                }
+                else
+                {
+                    write("Registrierung fehlgeschlagen! Der Benutzer esistiert bereits, dei Benutzername enthält ungültige Zeichen oder dein Passwort ist nicht lang genug");
+                }
+                changeStatus(0);
+            }
+
+            else
+            {
+                changeStatus(0);
+            }
         }
 
         private void interpretLogin(string Message)
