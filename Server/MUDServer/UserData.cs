@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
@@ -29,7 +28,7 @@ namespace MUDServer
         }
         public bool login(string name, string password)
         {
-            string query = "select U_Id from User where UName=? and Password=?";
+            string query = "select U_Id from User where Name=? and Password=?";
 
             OdbcCommand command = new OdbcCommand(query, DbConnection);
             OdbcParameter param;
@@ -49,8 +48,10 @@ namespace MUDServer
             try
             {
                 OdbcDataReader reader = command.ExecuteReader();
+
                 if (!reader.HasRows)
                 {
+                    
                     return false;
                 }
                 reader.Read();
@@ -60,6 +61,7 @@ namespace MUDServer
             }
             catch (Exception e)
             {
+                Console.WriteLine("Fehler!");
                 Console.WriteLine(e.Message);
                 return false;
             }

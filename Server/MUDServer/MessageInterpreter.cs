@@ -72,19 +72,25 @@ namespace MUDServer
             if (substatus == 0)
             {
                 user_name = Message.Trim();
+                write("Gebe nun das Passwort ein");
                 substatus++;
             }
             else if (substatus == 1)
             {
                 password = Message;
-                substatus++;
-            }
-            else if (substatus == 2)
-            {
+                
                 this._user_data = new UserData();
-                this._user_data.login(user_name, password);
+                if (this._user_data.login(user_name, password))
+                {
+                    write("login erfolgreich");
+                }
+                else
+                {
+                    write("login fehlgeschlagen!");
+                }
                 changeStatus(3);
             }
+            
             else
             {
                 changeStatus(0);
