@@ -33,7 +33,6 @@ namespace MUDServer
             OdbcCommand command = new OdbcCommand(query, DbConnection);
             try
             {
-
                 DbConnection.Open();
             }
             catch(Exception e)
