@@ -11,7 +11,7 @@ namespace MUDServer
         writemethod write;
         uint status = 0;
         uint substatus = 0; // Niemals vergessen, diesen status wieder auf 0 zu setzen!
-        long user_id = 42;
+
         string user_name = "";
         string password = "";
         UserData _user_data;
@@ -30,12 +30,15 @@ namespace MUDServer
                     interpretStart(message);
                     break;
                 case 1:
-                    interpretLogin(message);
-                    break;
-                case 2:
                     interpretRegister(message);
                     break;
+                case 2:
+                    interpretLogin(message);
+                    break;
                 case 3:
+                    interpretCharacterSelection(message);
+                    break;
+                case 4:
                     interpretGameLoop(message);
                     break;
                 default:
@@ -49,37 +52,50 @@ namespace MUDServer
             this.status = status;
             this.substatus = 0;
         }
+
         private void interpretStart(string Message)
         {
             Message = Message.ToLower();
             if (Message.StartsWith("login"))
             {
                 write("Gebe nun deinen Nutzernamen ein");
-                changeStatus(1);
+                changeStatus(2);
             }
         }
+
+        private void interpretRegister(string Message)
+        {
+        }
+
         private void interpretLogin(string Message)
         {
             if (substatus == 0)
             {
                 user_name = Message.Trim();
+                substatus++;
             }
             else if (substatus == 1)
             {
                 password = Message;
+                substatus++;
             }
             else if (substatus == 2)
             {
-                _user_data = new UserData(user_name, password);
+                this._user_data = new UserData();
+                this._user_data.login(user_name, password);
+                changeStatus(3);
             }
             else
             {
                 changeStatus(0);
             }
         }
-        private void interpretRegister(string Message)
+
+        public void interpretCharacterSelection(string Message)
         {
         }
+
+        
         private void interpretGameLoop(string Message)
         {
         }

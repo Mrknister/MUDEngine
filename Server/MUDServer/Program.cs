@@ -9,8 +9,8 @@ namespace MUDServer
     {
         static void Main(string[] args)
         {
-            //Server s = new Server();
-            //s.startListen();
+            Server s = new Server();
+            s.startListen();
             
         }
     }
