@@ -13,12 +13,16 @@ namespace MUDServer
     {
         OdbcConnection DbConnection;
         long U_Id;
+        OdbcCommand command;
 
         public UserData()
         {
             try
             {
                 DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudengineer;PWD=1234;");
+                DbConnection.Open();
+                command = new OdbcCommand();
+                command.Connection = DbConnection;
             }
             catch (Exception e)
             {
@@ -28,17 +32,9 @@ namespace MUDServer
         public bool login(string name, string password)
         {
             string query = "select U_Id from User where Name=? and Password=?";
-
-            OdbcCommand command = new OdbcCommand(query, DbConnection);
-            try
-            {
-                DbConnection.Open();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            command.CommandText = query;
+             
+            
 
             OdbcParameter param;
 
@@ -64,15 +60,13 @@ namespace MUDServer
                 }
                 reader.Read();
                 U_Id = reader.GetInt64(0);
-                reader.Close();
-                DbConnection.Close();
+
 
             }
             catch (Exception e)
             {
                 Console.WriteLine("Fehler!");
                 Console.WriteLine(e.Message);
-                DbConnection.Close();
                 return false;
             }
             return true;
@@ -114,24 +108,14 @@ namespace MUDServer
             
             string query = "select U_Id from User where Name=?";
             //check if name already exist
-            OdbcCommand command = new OdbcCommand(query, DbConnection);
-            try
-            {
-                DbConnection.Open();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                DbConnection.Close();
-                return false;
-            }
-
+            command.CommandText = query;
             OdbcParameter param;
 
             // add name to parameters
             param = new OdbcParameter();
             param.DbType = DbType.String;
             param.Value = name;
+
             command.Parameters.Add(param);
             try
             {
@@ -140,19 +124,14 @@ namespace MUDServer
                 
                 if (reader.HasRows)
                 {
-                    reader.Close();
-                    DbConnection.Close();
                     return false;
                 }
-                reader.Close();
-                DbConnection.Close();
 
             }
             catch (Exception e)
             {
                 Console.WriteLine("Fehler!");
                 Console.WriteLine(e.Message);
-                DbConnection.Close();
                 return false;
             }
             return true;
