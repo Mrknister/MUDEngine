@@ -18,7 +18,7 @@ namespace MUDServer
         {
             try
             {
-                DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudenineer;PWD=1234;");
+                DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudengineer;PWD=1234;");
 
             }
             catch (Exception e)
@@ -31,6 +31,7 @@ namespace MUDServer
             string query = "select U_Id from User where Name=? and Password=?";
 
             OdbcCommand command = new OdbcCommand(query, DbConnection);
+            DbConnection.Open();
             OdbcParameter param;
 
             // add name to parameters
@@ -57,16 +58,16 @@ namespace MUDServer
                 reader.Read();
                 U_Id = reader.GetInt64(0);
                 Console.WriteLine(U_Id);
+                DbConnection.Close();
 
             }
             catch (Exception e)
             {
                 Console.WriteLine("Fehler!");
                 Console.WriteLine(e.Message);
+                DbConnection.Close();
                 return false;
             }
-
-
             return true;
         }
         public List<string> getCharacters()
