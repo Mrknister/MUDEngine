@@ -1,5 +1,5 @@
 login:
- select * from User where UName=? and Password=?
+ select * from User where Name=? and Password=?
 
 register:
- ...
+ insert into User (Name,Password,LastLogin) values (?,?,NOW())

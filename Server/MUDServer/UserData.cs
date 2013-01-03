@@ -88,7 +88,7 @@ namespace MUDServer
             {
                 return false;
             }
-            string query = "";
+            string query = "insert into User (Name,Password,LastLogin) values (?,?,NOW())";
             return true;
         }
 
