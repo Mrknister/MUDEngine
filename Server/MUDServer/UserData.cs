@@ -88,7 +88,7 @@ namespace MUDServer
             command.Parameters.Clear();
 
             name = name.Trim();
-            if (!check_register(name, password))
+            if (!check_register(name, password)) // check register adds the parameters to the command.
             {
                 return false;
             }
