@@ -2,4 +2,4 @@ login:
  select * from User where Name=? and Password=?
 
 register:
- 
+ insert into User (Name,Password,LastLogin) values (?,?,NOW())
