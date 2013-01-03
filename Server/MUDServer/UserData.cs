@@ -39,9 +39,10 @@ namespace MUDServer
             //add password...
             param = new OdbcParameter();
             param.DbType = DbType.String;
-            param.Value = name;
+            param.Value = password;
             command.Parameters.Add(param);
 
+            
 
             return true;
         }
