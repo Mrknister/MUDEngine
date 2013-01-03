@@ -98,6 +98,7 @@ namespace MUDServer
             {
                 return false;
             }
+
             return true;
         }
     }
