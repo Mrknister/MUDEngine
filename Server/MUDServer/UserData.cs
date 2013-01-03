@@ -31,7 +31,17 @@ namespace MUDServer
             string query = "select U_Id from User where Name=? and Password=?";
 
             OdbcCommand command = new OdbcCommand(query, DbConnection);
-            DbConnection.Open();
+            try
+            {
+
+                DbConnection.Open();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
             OdbcParameter param;
 
             // add name to parameters
