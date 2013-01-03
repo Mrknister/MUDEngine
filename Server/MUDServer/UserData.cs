@@ -24,10 +24,6 @@ namespace MUDServer
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
             sql.query = "select U_Id from User where Name=? and Password=?";
 
-
-
-
-
             sql.add_parameter(name);
             sql.add_parameter(password);
             sql.execute_query();
@@ -44,10 +40,6 @@ namespace MUDServer
                 return false;
             }
             U_Id = Convert.ToInt64(sql.result[0][0]);
-            Console.WriteLine(U_Id);
-
-
-
 
             return true;
         }
@@ -73,8 +65,16 @@ namespace MUDServer
 
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
             exec.query = "insert into User (Name,Password,LastLogin) values (?,?,NOW())";
-            Console.WriteLine(exec.error_string);
-            return exec.error;
+            exec.add_parameter(name);
+            exec.add_parameter(password);
+            exec.execute_query();
+            if (exec.error)
+            {
+
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            return true;
         }
 
         private bool check_register(string name, string password)
