@@ -31,6 +31,7 @@ namespace MUDServer
         }
         public bool login(string name, string password)
         {
+            command.Parameters.Clear();
             string query = "select U_Id from User where Name=? and Password=?";
             command.CommandText = query;
              
@@ -83,6 +84,8 @@ namespace MUDServer
         }
         public bool register(string name, string password)
         {
+            command.Parameters.Clear();
+
             name = name.Trim();
             if (!check_register(name, password))
             {
@@ -95,6 +98,8 @@ namespace MUDServer
 
         private bool check_register(string name, string password)
         {
+            command.Parameters.Clear();
+
             //check if lenght of name is between 3 and 12 and password lenght > 8
             if (name.Length < 3 || name.Length > 12)
             {
