@@ -30,26 +30,25 @@ namespace MUDServer
 
             sql.add_parameter(name);
             sql.add_parameter(password);
-            try
+            sql.execute_query();
+
+            if (sql.error)
             {
-
-
-                if (!sql.HasRows)
-                {
-
-                    return false;
-                }
-                U_Id = (long)sql.result[0][0];
-
-
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Fehler!");
-                Console.WriteLine(e.Message);
+                Console.WriteLine(sql.error_string);
                 return false;
             }
+
+            if (!sql.HasRows)
+            {
+                Console.WriteLine("Empty Set");
+                return false;
+            }
+            U_Id = Convert.ToInt64(sql.result[0][0]);
+            Console.WriteLine(U_Id);
+
+
+
+
             return true;
         }
         public List<string> getCharacters()
