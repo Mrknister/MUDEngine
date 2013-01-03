@@ -19,7 +19,6 @@ namespace MUDServer
             try
             {
                 DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=localhost; DATABASE=MUDEngine; UID=mudengineer;PWD=1234;");
-
             }
             catch (Exception e)
             {
