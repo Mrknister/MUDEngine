@@ -98,6 +98,11 @@ namespace MUDServer
             {
                 return false;
             }
+            string query = "select U_Id from User where Name=?";
+            if (query = true)
+            {
+            
+            }
 
             return true;
         }
