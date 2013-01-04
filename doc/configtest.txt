@@ -1,0 +1,4 @@
+databaseuser = blubblub
+databasepassword = blabla
+databasehost =    jan.justdied.de
+#das ist ein zu ignorierender kommentar
