@@ -41,6 +41,9 @@ namespace MUDServer
                 case 4:
                     interpretGameLoop(message);
                     break;
+                case 5:
+                    interpretCharacterBuild(message);
+                    break;
                 default:
                     status = 0;
                     break;
@@ -150,6 +153,9 @@ namespace MUDServer
         private void interpretGameLoop(string Message)
         {
         }
-        
+
+        private void interpretCharacterBuild(string Message)
+        {
+        }
     }
 }
