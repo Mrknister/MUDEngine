@@ -164,13 +164,21 @@ namespace MUDServer
         
         private void interpretCharacterBuild(string Message)//case 4
         {
+            if (_user_data.U_Id != 0)
+            {
                 user_character = Message.Trim();
                 UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
                 exec.query = "insert into Character (Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana values (?,200,100,100,10,10,10,100,100))";
-            
+
                 exec.add_parameter(user_character);
                 exec.execute_query();
                 changeStatus(3);
+            }
+            else
+            {
+                write("Du bist nicht eingeloggt !");
+                changeStatus(0);
+            }
         }
         
         private void interpretGameLoop(string Message)//case 5
