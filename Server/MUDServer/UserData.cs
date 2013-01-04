@@ -12,7 +12,7 @@ namespace MUDServer
     class UserData
     {
 
-        long U_Id;
+        public long U_Id = 0;
 
 
         public UserData()
