@@ -101,7 +101,7 @@ namespace MUDServer
                 }
                 else
                 {
-                    write("Registrierung fehlgeschlagen! Der Benutzer esistiert bereits, dei Benutzername enthält ungültige Zeichen oder dein Passwort ist nicht lang genug");
+                    write("Registrierung fehlgeschlagen! Der Benutzer existiert bereits, der Benutzername enthält ungültige Zeichen oder dein Passwort ist nicht lang genug");
                 }
                 changeStatus(0);
             }
