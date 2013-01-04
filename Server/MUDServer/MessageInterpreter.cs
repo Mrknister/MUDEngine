@@ -14,6 +14,7 @@ namespace MUDServer
 
         string user_name = "";
         string password = "";
+        string user_character = "";
         UserData _user_data;
 
         public MessageInterpreter(writemethod w)
@@ -130,7 +131,7 @@ namespace MUDServer
                 this._user_data = new UserData();
                 if (this._user_data.login(user_name, password))
                 {
-                    write("login erfolgreich");
+                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: select \nUm einen Charakter zu erstellen tippe: build");
                     changeStatus(3);
                 }
                 else
@@ -152,6 +153,7 @@ namespace MUDServer
             Message = Message.ToLower();
             if (Message.StartsWith("select"))
             {
+                changeStatus(5);
             }
             else if (Message.StartsWith("build"))
             {
@@ -162,8 +164,13 @@ namespace MUDServer
         
         private void interpretCharacterBuild(string Message)//case 4
         {
-        
-
+                user_character = Message.Trim();
+                UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+                exec.query = "insert into Character (Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana values (?,200,100,100,10,10,10,100,100))";
+            
+                exec.add_parameter(user_character);
+                exec.execute_query();
+                changeStatus(3);
         }
         
         private void interpretGameLoop(string Message)//case 5
