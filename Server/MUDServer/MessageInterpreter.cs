@@ -148,14 +148,14 @@ namespace MUDServer
         public void interpretCharacterSelection(string Message)
         {
         }
-
+        
+        private void interpretCharacterBuild(string Message)
+        {
+        }
         
         private void interpretGameLoop(string Message)
         {
         }
 
-        private void interpretCharacterBuild(string Message)
-        {
-        }
     }
 }
