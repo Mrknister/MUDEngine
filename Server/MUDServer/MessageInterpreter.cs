@@ -56,7 +56,7 @@ namespace MUDServer
             this.substatus = 0;
         }
 
-        private void interpretStart(string Message)
+        private void interpretStart(string Message)//case 0
         {
             Message = Message.ToLower();
             if (Message.StartsWith("login"))
@@ -71,7 +71,7 @@ namespace MUDServer
             }
         }
 
-        private void interpretRegister(string Message)
+        private void interpretRegister(string Message)//case 1
         {
             if (substatus == 0)
             {
@@ -115,7 +115,7 @@ namespace MUDServer
             }
         }
 
-        private void interpretLogin(string Message)
+        private void interpretLogin(string Message)//case 2
         {
             if (substatus == 0)
             {
@@ -131,12 +131,13 @@ namespace MUDServer
                 if (this._user_data.login(user_name, password))
                 {
                     write("login erfolgreich");
+                    changeStatus(3);
                 }
                 else
                 {
                     write("login fehlgeschlagen!");
+                    changeStatus(0);
                 }
-                changeStatus(3);
             }
             
             else
@@ -145,15 +146,27 @@ namespace MUDServer
             }
         }
 
-        public void interpretCharacterSelection(string Message)
+        public void interpretCharacterSelection(string Message)//case 3
         {
+
+            Message = Message.ToLower();
+            if (Message.StartsWith("select"))
+            {
+            }
+            else if (Message.StartsWith("build"))
+            {
+                write("Gebe den Namen deines Charakters ein");
+                changeStatus(4);
+            }
         }
         
-        private void interpretCharacterBuild(string Message)
+        private void interpretCharacterBuild(string Message)//case 4
         {
+        
+
         }
         
-        private void interpretGameLoop(string Message)
+        private void interpretGameLoop(string Message)//case 5
         {
         }
 
