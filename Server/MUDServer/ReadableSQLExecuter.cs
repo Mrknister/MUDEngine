@@ -51,7 +51,7 @@ namespace MUDServer
         {
             using (OdbcConnection DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=mrknister.justdied.com; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;"))
             {
-                DbConnection.Open();
+                
                 OdbcCommand _command = new OdbcCommand(query, DbConnection);
                 if (_parameters.Count != 0)
                 {
@@ -60,6 +60,7 @@ namespace MUDServer
 
                 try
                 {
+                    DbConnection.Open();
 
                     OdbcDataReader reader = _command.ExecuteReader();
                     HasRows = reader.HasRows;
