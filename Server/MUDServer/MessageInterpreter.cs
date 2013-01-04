@@ -153,6 +153,7 @@ namespace MUDServer
             Message = Message.ToLower();
             if (Message.StartsWith("select"))
             {
+                changeStatus(5);
             }
             else if (Message.StartsWith("build"))
             {
@@ -165,7 +166,12 @@ namespace MUDServer
         {
                 user_character = Message.Trim();
                 write("Gebe jetzt den Namen deines neuen Abenteurers ein !");
-                substatus++;
+                UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+                exec.query = "insert into Character (Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana values (?,200,100,100,10,10,10,100,100))";
+            
+                exec.add_parameter(user_character);
+                exec.execute_query();
+                changeStatus(3);
         }
         
         private void interpretGameLoop(string Message)//case 5
