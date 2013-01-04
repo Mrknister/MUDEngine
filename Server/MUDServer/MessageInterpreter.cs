@@ -14,6 +14,7 @@ namespace MUDServer
 
         string user_name = "";
         string password = "";
+        string user_character = "";
         UserData _user_data;
 
         public MessageInterpreter(writemethod w)
@@ -131,7 +132,6 @@ namespace MUDServer
                 if (this._user_data.login(user_name, password))
                 {
                     write("login erfolgreich \nUm einen Charakter zu waehlen tippe: select \nUm einen Charakter zu erstellen tippe: build");
-                    
                     changeStatus(3);
                 }
                 else
@@ -163,8 +163,9 @@ namespace MUDServer
         
         private void interpretCharacterBuild(string Message)//case 4
         {
-        
-
+                user_character = Message.Trim();
+                write("Gebe jetzt den Namen deines neuen Abenteurers ein !");
+                substatus++;
         }
         
         private void interpretGameLoop(string Message)//case 5
