@@ -39,10 +39,10 @@ namespace MUDServer
                     interpretCharacterSelection(message);
                     break;
                 case 4:
-                    interpretGameLoop(message);
+                    interpretCharacterBuild(message);
                     break;
                 case 5:
-                    interpretCharacterBuild(message);
+                    interpretGameLoop(message);
                     break;
                 default:
                     status = 0;
