@@ -130,7 +130,8 @@ namespace MUDServer
                 this._user_data = new UserData();
                 if (this._user_data.login(user_name, password))
                 {
-                    write("login erfolgreich");
+                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: select \nUm einen Charakter zu erstellen tippe: build");
+                    
                     changeStatus(3);
                 }
                 else
