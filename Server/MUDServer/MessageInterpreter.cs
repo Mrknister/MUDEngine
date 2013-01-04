@@ -165,7 +165,6 @@ namespace MUDServer
         private void interpretCharacterBuild(string Message)//case 4
         {
                 user_character = Message.Trim();
-                write("Gebe jetzt den Namen deines neuen Abenteurers ein !");
                 UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
                 exec.query = "insert into Character (Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana values (?,200,100,100,10,10,10,100,100))";
             
