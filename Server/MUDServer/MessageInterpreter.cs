@@ -188,6 +188,10 @@ namespace MUDServer
                 exec.add_parameter(_user_data.U_Id);
                 exec.add_parameter(user_character);
                 exec.execute_query();
+                if (exec.error)
+                {
+                    Console.WriteLine(exec.error_string);
+                }
                 changeStatus(3);
             }
             else
