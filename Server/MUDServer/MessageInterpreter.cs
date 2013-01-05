@@ -169,6 +169,7 @@ namespace MUDServer
                     {
                         name = Convert.ToString(names[0]);
                         write(name);
+                        write(" \n");
                     }
                     substatus++;
                 }
