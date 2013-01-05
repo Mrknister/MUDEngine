@@ -11,7 +11,7 @@ namespace MUDServer
         public string DataTransfer, FileLine, DatabaseHost, DatabaseUser, DatabasePassword;
         
 
-        public string ReadFile(String ConfigFile)
+        public void ReadFile(String ConfigFile)
         {
             StreamReader ConfigFiles = new StreamReader(@ConfigFile);
             while ((FileLine = ConfigFiles.ReadLine()) != "#")
@@ -19,26 +19,22 @@ namespace MUDServer
 
                 if( FileLine.StartsWith("databaseuser =")==true)
                 {
-                    DataTransfer = SetDatabaseUser(FileLine);
+                    DatabaseUser = SetDatabaseUser(FileLine);
                 }
                 if( FileLine.StartsWith("databasepassword =")==true)
                 {
-                    DataTransfer = SetDatabasePassword(FileLine);
+                    DatabasePassword = SetDatabasePassword(FileLine);
                 }
                 if( FileLine.StartsWith("databasehost =")==true)
                 {
-                   DataTransfer=SetDatabaseHost(FileLine);
+                   DatabaseHost=SetDatabaseHost(FileLine);
                 }
                 else
                 {
                     DataTransfer = "Invalid or End of Configfile";
-                }
-
-                return DataTransfer;
+                } 
+             
              }
-            
-           
-
 
         }
 
