@@ -55,6 +55,15 @@ namespace MUDServer
         }
         public bool createCharacter(string name)
         {
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select C_Id from `Character` where Name=?";
+            sql.add_parameter(name);
+            sql.execute_query();
+            
+            if (sql.HasRows)
+            {
+                return false;
+            }
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
             exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana) values (?,?,200,100,100,10,10,10,100,100)";
 
