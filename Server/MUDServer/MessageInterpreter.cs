@@ -19,7 +19,7 @@ namespace MUDServer
         public MessageInterpreter(writemethod w)
         {
             write = w;
-            write("Wenn du ein neuer Nutzer bist tippe 'neu' ein. \nWenn du schon mal hier warst, tippe 'login' ein.");
+            write("Wenn du ein neuer Nutzer bist tippe 'neu' ein. \nWenn du schon mal hier warst, tippe 'login' ein.\n");
         }
         public void interpretMessage(String message)
         {
@@ -61,12 +61,12 @@ namespace MUDServer
             Message = Message.ToLower();
             if (Message.StartsWith("login"))
             {
-                write("Gebe nun deinen Nutzernamen ein");
+                write("Gebe nun deinen Nutzernamen ein\n");
                 changeStatus(2);
             }
             else if (Message.StartsWith("neu"))
             {
-                write("Gebe einen Nutzernamen ein");
+                write("Gebe einen Nutzernamen ein\n");
                 changeStatus(1);
             }
         }
@@ -76,21 +76,21 @@ namespace MUDServer
             if (substatus == 0)
             {
                 user_name = Message.Trim();
-                write("Gebe nun das Passwort ein");
+                write("Gebe nun das Passwort ein\n");
                 substatus++;
             }
             
             else if (substatus == 1)
             {
                 password = Message;
-                write("Gebe das Passwort erneut ein");
+                write("Gebe das Passwort erneut ein\n");
                 substatus++;
             }
             else if (substatus == 2)
             {
                 if (password != Message)
                 {
-                    write("Die Passwörter stimmen nicht überein\n Gebe dein Passwort ein");
+                    write("Die Passwörter stimmen nicht überein\n Gebe dein Passwort ein\n");
                     substatus = 1;
                     return;
                 }
@@ -100,11 +100,11 @@ namespace MUDServer
                 this._user_data = new UserData();
                 if (this._user_data.register(user_name, password))
                 {
-                    write("Registrierung erfolgreich");
+                    write("Registrierung erfolgreich\n");
                 }
                 else
                 {
-                    write("Registrierung fehlgeschlagen! Der Benutzer existiert bereits, der Benutzername enthält ungültige Zeichen oder dein Passwort ist nicht lang genug");
+                    write("Registrierung fehlgeschlagen! Der Benutzer existiert bereits, der Benutzername enthält ungültige Zeichen oder dein Passwort ist nicht lang genug\n");
                 }
                 changeStatus(0);
             }
@@ -120,7 +120,7 @@ namespace MUDServer
             if (substatus == 0)
             {
                 user_name = Message.Trim();
-                write("Gebe nun das Passwort ein");
+                write("Gebe nun das Passwort ein\n");
                 substatus++;
             }
             else if (substatus == 1)
@@ -130,12 +130,12 @@ namespace MUDServer
                 this._user_data = new UserData();
                 if (this._user_data.login(user_name, password))
                 {
-                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu");
+                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
                     changeStatus(3);
                 }
                 else
                 {
-                    write("login fehlgeschlagen!");
+                    write("login fehlgeschlagen!\n");
                     changeStatus(0);
                 }
             }
@@ -163,18 +163,17 @@ namespace MUDServer
                     }
                     string name;
 
-                    write("Wähle aus der Liste den Charakter mit dem du spielen willst");
+                    write("Wähle aus der Liste den Charakter mit dem du spielen willst\n");
                     foreach (object[] names in sql.result)
                     {
                         name = Convert.ToString(names[0]);
-                        write(name);
-                        write(" \n");
+                        write(name + "\n");
                     }
                     substatus++;
                 }
                 else if (Message.StartsWith("neu"))
                 {
-                    write("Gebe den Namen deines Charakters ein");
+                    write("Gebe den Namen deines Charakters ein\n");
                     changeStatus(4);
                 }
             }
@@ -194,12 +193,12 @@ namespace MUDServer
 
                 string user_character = Message.Trim();
                 _user_data.createCharacter(user_character);
-                write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu");
+                write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
                 changeStatus(3);
             }
             else
             {
-                write("Du bist nicht eingeloggt !");
+                write("Du bist nicht eingeloggt !\n");
                 changeStatus(0);
             }
         }
