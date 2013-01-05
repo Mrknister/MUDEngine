@@ -165,7 +165,7 @@ namespace MUDServer
                     string name;
                     if (!sql.HasRows)
                     {
-                        write("Du hast noch keinen Charakter !\n");
+                        write("Du hast noch keinen Charakter!\n");
                         changeStatus(4);
                     }
                     write("Wähle aus der Liste den Charakter mit dem du spielen willst\n");
@@ -201,17 +201,20 @@ namespace MUDServer
                 _user_data.createCharacter(user_character);
                 if (_user_data.createCharacter(user_character))
                 {
+                    write("Charakter wurde Erfolgreich erstellt!\n");
                     write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
                     changeStatus(3);
                 }
                 else
                 {
-                    write("Dieser Name existiert bereits");
+                    write("Dieser Name existiert bereits\n");
+                    write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
+                    changeStatus(3);
                 }
             }
             else
             {
-                write("Du bist nicht eingeloggt !\n");
+                write("Du bist nicht eingeloggt!\n");
                 changeStatus(0);
             }
         }
