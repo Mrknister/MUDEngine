@@ -10,10 +10,13 @@ namespace MUDServer
     {
         public string  FileLine, DatabaseHost, DatabaseUser, DatabasePassword;
         
-        public void ReadFile(String ConfigFile)
+        public bool ReadFile(String ConfigFile)
         {          
-          if(File.Exists(ConfigFile))
+          if(!File.Exists(ConfigFile))
           {
+              return false;
+          }
+
             StreamReader ConfigFiles = new StreamReader(ConfigFile);
             while (!ConfigFiles.EndOfStream)                            // While Loop for setting global variables
               {
