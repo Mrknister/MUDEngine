@@ -12,7 +12,8 @@ namespace MUDServer
         
         public void ReadFile(String ConfigFile)
         {          
-            {
+          if(File.Exists(ConfigFile))
+          {
             StreamReader ConfigFiles = new StreamReader(ConfigFile);
             while (!ConfigFiles.EndOfStream)                            // While Loop for setting global variables
               {
@@ -31,8 +32,8 @@ namespace MUDServer
                 {
                     DatabaseHost = GetValue(FileLine);
                 }
-              } 
             }
+          }
         }
 
         private string GetValue(string line)                            // Method to get the values for the Database out of the configfile.
