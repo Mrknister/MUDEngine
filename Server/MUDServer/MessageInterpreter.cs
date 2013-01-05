@@ -154,9 +154,13 @@ namespace MUDServer
             if (Message.StartsWith("select"))
             {
                 ReadableSQLExecuter sql = new ReadableSQLExecuter();
-                sql.query = "select Name from Charakter where U-Id=?";
+                sql.query = "select Name from `Character` where U_Id=?";
                 sql.add_parameter(_user_data.U_Id);
                 sql.execute_query();
+                if (sql.error)
+                {
+                    Console.WriteLine(sql.error_string);
+                }
                 string name;
                 
                 foreach (object[] names in sql.result)
