@@ -157,12 +157,17 @@ namespace MUDServer
                     sql.query = "select Name from `Character` where U_Id=?";
                     sql.add_parameter(_user_data.U_Id);
                     sql.execute_query();
+                    
                     if (sql.error)
                     {
                         Console.WriteLine(sql.error_string);
                     }
                     string name;
-
+                    if (!sql.HasRows)
+                    {
+                        write("Du hast noch keinen Charakter !\n");
+                        changeStatus(4);
+                    }
                     write("Wähle aus der Liste den Charakter mit dem du spielen willst\n");
                     foreach (object[] names in sql.result)
                     {
