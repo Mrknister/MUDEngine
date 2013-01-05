@@ -8,21 +8,20 @@ namespace MUDServer
 {
     class Config
     {
-        public string  FileLine, DatabaseHost, DatabaseUser, DatabasePassword;
-        
-        public bool ReadFile(String ConfigFile)
-        {          
-          if(!File.Exists(ConfigFile))
-          {
-              return false;
-          }
+        public string FileLine, DatabaseHost, DatabaseUser, DatabasePassword;
 
+        public bool ReadFile(String ConfigFile)
+        {
+            if (File.Exists(ConfigFile))
+            {
+                return false;
+            }
             StreamReader ConfigFiles = new StreamReader(ConfigFile);
             while (!ConfigFiles.EndOfStream)                            // While Loop for setting global variables
-              {
+            {
                 FileLine = ConfigFiles.ReadLine();
                 FileLine = FileLine.Replace(" ", "");
-               
+
                 if (FileLine.ToLower().StartsWith("databaseuser=") == true)
                 {
                     DatabaseUser = GetValue(FileLine);
@@ -36,16 +35,17 @@ namespace MUDServer
                     DatabaseHost = GetValue(FileLine);
                 }
             }
-          }
+            return true;
+
         }
 
         private string GetValue(string line)                            // Method to get the values for the Database out of the configfile.
         {
             int Found;
-            string value=line;
+            string value = line;
 
             Found = line.IndexOf("=");
-            value = value.Remove(0, Found+1);
+            value = value.Remove(0, Found + 1);
 
             return value;
 
