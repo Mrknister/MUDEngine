@@ -13,20 +13,21 @@ namespace MUDServer
         public void ReadFile(String ConfigFile)
         {          
             {
-            StreamReader ConfigFiles = new StreamReader(@ConfigFile);
+            StreamReader ConfigFiles = new StreamReader(ConfigFile);
             while (!ConfigFiles.EndOfStream)                            // While Loop for setting global variables
               {
                 FileLine = ConfigFiles.ReadLine();
                 FileLine = FileLine.Replace(" ", "");
-                if (FileLine.StartsWith("databaseuser=") == true)
+               
+                if (FileLine.ToLower().StartsWith("databaseuser=") == true)
                 {
                     DatabaseUser = GetValue(FileLine);
                 }
-                if (FileLine.StartsWith("databasepassword=") == true)
+                if (FileLine.ToLower().StartsWith("databasepassword=") == true)
                 {
                     DatabasePassword = GetValue(FileLine);
                 }
-                if (FileLine.StartsWith("databasehost=") == true)
+                if (FileLine.ToLower().StartsWith("databasehost=") == true)
                 {
                     DatabaseHost = GetValue(FileLine);
                 }
@@ -40,7 +41,7 @@ namespace MUDServer
             string value=line;
 
             Found = line.IndexOf("=");
-            value = value.Remove(0, Found);
+            value = value.Remove(0, Found+1);
 
             return value;
 
