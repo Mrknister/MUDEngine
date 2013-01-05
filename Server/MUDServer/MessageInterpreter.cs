@@ -14,7 +14,6 @@ namespace MUDServer
 
         string user_name = "";
         string password = "";
-        string user_character = "";
         UserData _user_data;
 
         public MessageInterpreter(writemethod w)
@@ -192,17 +191,9 @@ namespace MUDServer
         {
             if (_user_data.U_Id != 0)
             {
-                user_character = Message.Trim();
-                UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-                exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana) values (?,?,200,100,100,10,10,10,100,100)";
 
-                exec.add_parameter(_user_data.U_Id);
-                exec.add_parameter(user_character);
-                exec.execute_query();
-                if (exec.error)
-                {
-                    Console.WriteLine(exec.error_string);
-                }
+                string user_character = Message.Trim();
+                _user_data.createCharacter(user_character);
                 write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu");
                 changeStatus(3);
             }

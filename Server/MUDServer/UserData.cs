@@ -53,8 +53,19 @@ namespace MUDServer
 
             return to_return;
         }
-        public bool createCharacter()
+        public bool createCharacter(string name)
         {
+            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+            exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana) values (?,?,200,100,100,10,10,10,100,100)";
+
+            exec.add_parameter(U_Id);
+            exec.add_parameter(name);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
             return true;
         }
 
