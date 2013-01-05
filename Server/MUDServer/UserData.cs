@@ -19,7 +19,7 @@ namespace MUDServer
         {
 
         }
-        public bool selectCharacter()
+        public bool selectCharacter(string name)
         {
             return false;
         }

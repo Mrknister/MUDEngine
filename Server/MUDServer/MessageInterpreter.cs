@@ -169,7 +169,6 @@ namespace MUDServer
                         name = Convert.ToString(names[0]);
                         write(name);
                     }
-                    string character_name = Message.Trim();
                     substatus++;
                 }
                 else if (Message.StartsWith("build"))
@@ -180,6 +179,8 @@ namespace MUDServer
             }
             else if (substatus == 1)
             {
+                string character_name = Message.Trim();
+                _user_data.selectCharacter(character_name);
                 // hier kommt ein aufruf an _user_data.selectCharacter hin
             }
 
