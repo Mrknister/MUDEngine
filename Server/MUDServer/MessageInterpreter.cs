@@ -131,7 +131,7 @@ namespace MUDServer
                 this._user_data = new UserData();
                 if (this._user_data.login(user_name, password))
                 {
-                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: select \nUm einen Charakter zu erstellen tippe: build");
+                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu");
                     changeStatus(3);
                 }
                 else
@@ -152,7 +152,7 @@ namespace MUDServer
             if (substatus == 0)
             {
                 Message = Message.ToLower();
-                if (Message.StartsWith("select"))
+                if (Message.StartsWith("wahl"))
                 {
                     ReadableSQLExecuter sql = new ReadableSQLExecuter();
                     sql.query = "select Name from `Character` where U_Id=?";
@@ -164,6 +164,7 @@ namespace MUDServer
                     }
                     string name;
 
+                    write("Wähle aus der Liste den Charakter mit dem du spielen willst");
                     foreach (object[] names in sql.result)
                     {
                         name = Convert.ToString(names[0]);
@@ -171,7 +172,7 @@ namespace MUDServer
                     }
                     substatus++;
                 }
-                else if (Message.StartsWith("build"))
+                else if (Message.StartsWith("neu"))
                 {
                     write("Gebe den Namen deines Charakters ein");
                     changeStatus(4);
