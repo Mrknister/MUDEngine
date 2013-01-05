@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicSqlExecuter.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="CommandInterpreter.cs" />
     <Compile Include="Connection.cs" />

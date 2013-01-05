@@ -7,15 +7,11 @@ using System.Collections.Generic;
 
 namespace MUDServer
 {
-    class ReadableSQLExecuter
+    class ReadableSQLExecuter : BasicSQLExecuter
     {
-        public bool error = false;
-        public string error_string = "";
-        public string query;
         public List<object[]> result;
         public bool HasRows = false;
 
-        List<OdbcParameter> _parameters = new List<OdbcParameter>();
 
 
         public ReadableSQLExecuter()
@@ -24,32 +20,9 @@ namespace MUDServer
         }
 
 
-        public void add_parameter(long value)
+        public override bool execute_query()
         {
-
-            OdbcParameter param = new OdbcParameter();
-            param.DbType = DbType.Int64;
-            param.Value = value;
-            _parameters.Add(param);
-        }
-        public void add_parameter(string value)
-        {
-
-            OdbcParameter param = new OdbcParameter();
-            param.DbType = DbType.String;
-            param.Value = value;
-
-            _parameters.Add(param);
-        }
-        public void add_parameter(OdbcParameter param)
-        {
-            _parameters.Add(param);
-        }
-
-
-        public bool execute_query()
-        {
-            using (OdbcConnection DbConnection = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=mrknister.justdied.com; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;"))
+            using (OdbcConnection DbConnection = get_connection() )
             {
                 
                 OdbcCommand _command = new OdbcCommand(query, DbConnection);
@@ -67,7 +40,6 @@ namespace MUDServer
 
                     if (reader.HasRows && reader.FieldCount > 0)
                     {
-
                         result = new List<object[]>();
                         while (reader.Read())
                         {
