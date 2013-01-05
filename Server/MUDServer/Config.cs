@@ -16,16 +16,16 @@ namespace MUDServer
             StreamReader ConfigFiles = new StreamReader(@ConfigFile);
             while ((FileLine = ConfigFiles.ReadLine()) != "#")
             {
-
-                if( FileLine.StartsWith("databaseuser =")==true)
+                FileLine = FileLine.Replace(" ", "");
+                if( FileLine.StartsWith("databaseuser=")==true)
                 {
                     DatabaseUser = SetDatabaseUser(FileLine);
                 }
-                if( FileLine.StartsWith("databasepassword =")==true)
+                if( FileLine.StartsWith("databasepassword=")==true)
                 {
                     DatabasePassword = SetDatabasePassword(FileLine);
                 }
-                if( FileLine.StartsWith("databasehost =")==true)
+                if( FileLine.StartsWith("databasehost=")==true)
                 {
                    DatabaseHost=SetDatabaseHost(FileLine);
                 }
