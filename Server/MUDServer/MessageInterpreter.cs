@@ -183,7 +183,7 @@ namespace MUDServer
             {
                 user_character = Message.Trim();
                 UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-                exec.query = "insert into Character (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana values (?,?,200,100,100,10,10,10,100,100))";
+                exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana values (?,?,200,100,100,10,10,10,100,100))";
 
                 exec.add_parameter(_user_data.U_Id);
                 exec.add_parameter(user_character);
