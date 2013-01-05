@@ -149,32 +149,40 @@ namespace MUDServer
 
         public void interpretCharacterSelection(string Message)//case 3
         {
+            if (substatus == 0)
+            {
+                Message = Message.ToLower();
+                if (Message.StartsWith("select"))
+                {
+                    ReadableSQLExecuter sql = new ReadableSQLExecuter();
+                    sql.query = "select Name from `Character` where U_Id=?";
+                    sql.add_parameter(_user_data.U_Id);
+                    sql.execute_query();
+                    if (sql.error)
+                    {
+                        Console.WriteLine(sql.error_string);
+                    }
+                    string name;
 
-            Message = Message.ToLower();
-            if (Message.StartsWith("select"))
-            {
-                ReadableSQLExecuter sql = new ReadableSQLExecuter();
-                sql.query = "select Name from `Character` where U_Id=?";
-                sql.add_parameter(_user_data.U_Id);
-                sql.execute_query();
-                if (sql.error)
-                {
-                    Console.WriteLine(sql.error_string);
+                    foreach (object[] names in sql.result)
+                    {
+                        name = Convert.ToString(names[0]);
+                        write(name);
+                    }
+                    string character_name = Message.Trim();
+                    substatus++;
                 }
-                string name;
-                
-                foreach (object[] names in sql.result)
+                else if (Message.StartsWith("build"))
                 {
-                   name = Convert.ToString(names[0]);
-                   write(name);
+                    write("Gebe den Namen deines Charakters ein");
+                    changeStatus(4);
                 }
-                string character_name = Message.Trim();
             }
-            else if (Message.StartsWith("build"))
+            else if (substatus == 1)
             {
-                write("Gebe den Namen deines Charakters ein");
-                changeStatus(4);
+                // hier kommt ein aufruf an _user_data.selectCharacter hin
             }
+
         }
         
         private void interpretCharacterBuild(string Message)//case 4
