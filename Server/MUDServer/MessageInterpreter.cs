@@ -131,7 +131,7 @@ namespace MUDServer
                 this._user_data = new UserData();
                 if (this._user_data.login(user_name, password))
                 {
-                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: select \nUm einen Charakter zu erstellen tippe: build");
+                    write("login erfolgreich \nUm einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu");
                     changeStatus(3);
                 }
                 else
@@ -149,17 +149,43 @@ namespace MUDServer
 
         public void interpretCharacterSelection(string Message)//case 3
         {
+            if (substatus == 0)
+            {
+                Message = Message.ToLower();
+                if (Message.StartsWith("wahl"))
+                {
+                    ReadableSQLExecuter sql = new ReadableSQLExecuter();
+                    sql.query = "select Name from `Character` where U_Id=?";
+                    sql.add_parameter(_user_data.U_Id);
+                    sql.execute_query();
+                    if (sql.error)
+                    {
+                        Console.WriteLine(sql.error_string);
+                    }
+                    string name;
 
-            Message = Message.ToLower();
-            if (Message.StartsWith("select"))
-            {
-                changeStatus(5);
+                    write("Wähle aus der Liste den Charakter mit dem du spielen willst");
+                    foreach (object[] names in sql.result)
+                    {
+                        name = Convert.ToString(names[0]);
+                        write(name);
+                        write(" \n");
+                    }
+                    substatus++;
+                }
+                else if (Message.StartsWith("neu"))
+                {
+                    write("Gebe den Namen deines Charakters ein");
+                    changeStatus(4);
+                }
             }
-            else if (Message.StartsWith("build"))
+            else if (substatus == 1)
             {
-                write("Gebe den Namen deines Charakters ein");
-                changeStatus(4);
+                string character_name = Message.Trim();
+                _user_data.selectCharacter(character_name);
+                // hier kommt ein aufruf an _user_data.selectCharacter hin
             }
+
         }
         
         private void interpretCharacterBuild(string Message)//case 4
@@ -168,11 +194,16 @@ namespace MUDServer
             {
                 user_character = Message.Trim();
                 UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-                exec.query = "insert into Character (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana values (?,?,200,100,100,10,10,10,100,100))";
+                exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana) values (?,?,200,100,100,10,10,10,100,100)";
 
                 exec.add_parameter(_user_data.U_Id);
                 exec.add_parameter(user_character);
                 exec.execute_query();
+                if (exec.error)
+                {
+                    Console.WriteLine(exec.error_string);
+                }
+                write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu");
                 changeStatus(3);
             }
             else
