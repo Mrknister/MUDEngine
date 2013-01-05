@@ -203,6 +203,7 @@ namespace MUDServer
                 {
                     Console.WriteLine(exec.error_string);
                 }
+                write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu");
                 changeStatus(3);
             }
             else
