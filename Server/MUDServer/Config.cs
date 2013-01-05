@@ -8,59 +8,42 @@ namespace MUDServer
 {
     class Config
     {
-        public string DataTransfer, FileLine, DatabaseHost, DatabaseUser, DatabasePassword;
+        public string  FileLine, DatabaseHost, DatabaseUser, DatabasePassword;
         
-
         public void ReadFile(String ConfigFile)
-        {
-            StreamReader ConfigFiles = new StreamReader(@ConfigFile);
-            while ((FileLine = ConfigFiles.ReadLine()) != "#")
+        {          
             {
+            StreamReader ConfigFiles = new StreamReader(@ConfigFile);
+            while (!ConfigFiles.EndOfStream)                            // While Loop for setting global variables
+              {
+                FileLine = ConfigFiles.ReadLine();
                 FileLine = FileLine.Replace(" ", "");
-                if( FileLine.StartsWith("databaseuser=")==true)
+                if (FileLine.StartsWith("databaseuser=") == true)
                 {
-                    DatabaseUser = SetDatabaseUser(FileLine);
+                    DatabaseUser = GetValue(FileLine);
                 }
-                if( FileLine.StartsWith("databasepassword=")==true)
+                if (FileLine.StartsWith("databasepassword=") == true)
                 {
-                    DatabasePassword = SetDatabasePassword(FileLine);
+                    DatabasePassword = GetValue(FileLine);
                 }
-                if( FileLine.StartsWith("databasehost=")==true)
+                if (FileLine.StartsWith("databasehost=") == true)
                 {
-                   DatabaseHost=SetDatabaseHost(FileLine);
+                    DatabaseHost = GetValue(FileLine);
                 }
-                else
-                {
-                    DataTransfer = "Invalid or End of Configfile";
-                } 
-             
-             }
-
+              } 
+            }
         }
 
-        private string SetDatabaseUser(string line)
+        private string GetValue(string line)                            // Method to get the values for the Database out of the configfile.
         {
-            
+            int Found;
+            string value=line;
 
-            return DataTransfer;
+            Found = line.IndexOf("=");
+            value = value.Remove(0, Found);
+
+            return value;
 
         }
-
-        private string SetDatabasePassword(string line)
-        {
-            
-
-            return DataTransfer;
-        }
-
-        private string SetDatabaseHost(string line)
-        {
-            
-
-            return DataTransfer;
-        }
-       
-      
-
     }
 }
