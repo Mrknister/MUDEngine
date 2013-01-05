@@ -153,7 +153,18 @@ namespace MUDServer
             Message = Message.ToLower();
             if (Message.StartsWith("select"))
             {
-                changeStatus(5);
+                ReadableSQLExecuter sql = new ReadableSQLExecuter();
+                sql.query = "select Name from Charakter where U-Id=?";
+                sql.add_parameter(_user_data.U_Id);
+                sql.execute_query();
+                string name = Convert.ToString(sql.result[0][0]);
+                /*sql.result[0][0] = new List<string>();
+                foreach (object names in sql.result)
+                {
+                   string name = Convert.ToString(names);
+                   write(name);
+                }
+                */
             }
             else if (Message.StartsWith("build"))
             {
