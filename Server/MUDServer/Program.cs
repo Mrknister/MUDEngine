@@ -13,7 +13,7 @@ namespace MUDServer
         static void Main(string[] args)
         {
             Config test = new Config();
-            test.ReadFile(@"E:\Programme it\Projekt Arnold\MUDEngine\doc\configtest.txt");
+            test.ReadFile(@"..\..\..\..\doc\configtest.txt");
             Console.WriteLine(test.DatabaseHost + " " +test.DatabasePassword +" "+ test.DatabaseUser);
             Console.ReadLine();
 
