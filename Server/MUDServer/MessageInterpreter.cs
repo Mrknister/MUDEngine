@@ -193,13 +193,21 @@ namespace MUDServer
         
         private void interpretCharacterBuild(string Message)//case 4
         {
+            
             if (_user_data.U_Id != 0)
             {
 
                 string user_character = Message.Trim();
                 _user_data.createCharacter(user_character);
-                write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
-                changeStatus(3);
+                if (_user_data.createCharacter(user_character))
+                {
+                    write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
+                    changeStatus(3);
+                }
+                else
+                {
+                    write("Dieser Name existiert bereits");
+                }
             }
             else
             {
