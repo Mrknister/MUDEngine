@@ -14,7 +14,7 @@ namespace MUDClient
 
         static void Main(string[] args)
         {
-            Console.Write("Bitte geben sie den Hostnamen ein: localhost");
+            Console.Write("Bitte geben sie den Hostnamen ein: localhost\n");
             String host_name = "localhost"; // Console.ReadLine();
             TcpClient client;
 
@@ -89,7 +89,7 @@ namespace MUDClient
                 if(stream.CanRead)
                     stream.BeginRead(myReadBuffer, 0, myReadBuffer.Length, new AsyncCallback(read_callback), stream);
                 // Print out the received message to the console.
-                Console.WriteLine( myCompleteMessage);
+                Console.Write(myCompleteMessage);
             }
             catch(Exception e)
             {
