@@ -19,6 +19,10 @@ namespace MUDServer
         {
 
         }
+        public bool selectCharacter()
+        {
+            return false;
+        }
         public bool login(string name, string password)
         {
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
