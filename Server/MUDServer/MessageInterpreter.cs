@@ -187,17 +187,19 @@ namespace MUDServer
                 string character_name = Message.Trim();
                 if (_user_data.selectCharacter(character_name))
                 {
+                    write("Charakter gewählt.\n");
                     substatus++;
                 }
                 else
                 {
+                    write("Charakter konnte nicht gewählt werden.\n");
                     substatus--;
                 }
             }
 
             else if (substatus == 2)
             {
-            
+                changeStatus(5);
             }
         }
         
