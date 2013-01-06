@@ -188,18 +188,13 @@ namespace MUDServer
                 if (_user_data.selectCharacter(character_name))
                 {
                     write("Charakter gewählt.\n");
-                    substatus++;
+                    changeStatus(5);
                 }
                 else
                 {
                     write("Charakter konnte nicht gewählt werden.\n");
                     substatus--;
                 }
-            }
-
-            else if (substatus == 2)
-            {
-                changeStatus(5);
             }
         }
         
@@ -233,6 +228,7 @@ namespace MUDServer
         
         private void interpretGameLoop(string Message)//case 5
         {
+            write("Status5");
         }
 
     }
