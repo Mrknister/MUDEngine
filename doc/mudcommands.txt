@@ -16,4 +16,10 @@ Load RoomData
 
 load_Monster
  select Name from `Monster`,`MonsterIsIn` where R_Id=? and RespawnAtTime<NOW()
+
+change Room
+ select R_IdT from `Gate` where R_IdF=? and Direction=?
+ 
+ update `Character` set R_Id=? where C_Id=?
+ 
  

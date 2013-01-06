@@ -7,11 +7,13 @@ namespace MUDServer
 {
     class EnviromentData
     {
-        Int64 R_Id;
+        long R_Id;
+        long C_Id;
         string R_Name;
         string R_Discription;
         public EnviromentData(long C_Id)
         {
+            this.C_Id = C_Id;
         }
         public void loadRoom()
         {
@@ -42,6 +44,22 @@ namespace MUDServer
                 monster_list.Add(m_name);
             }
             return monster_list;
+        }
+        public bool changeRoom (string direction)
+        {
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select R_IdT from `Gate` where R_IdF=? and Direction=?";
+            sql.add_parameter(R_Id);
+            sql.add_parameter(direction);
+            sql.execute_query();
+            R_Id = Convert.ToInt64(sql.result[0][0]);
+            
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query = "update `Character` set R_Id=? where C_Id=?";
+            exec.add_parameter(R_Id);
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            return true;
         }
     }
 }
