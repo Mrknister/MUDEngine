@@ -19,6 +19,30 @@ namespace MUDServer
             }
             else if (command.StartsWith("a ")) 
                 angriff(command);
+            else if (command.StartsWith("n "))
+            {
+                goNorth();
+            }
+            else if (command.StartsWith("s "))
+            {
+                goSouth();
+            }
+            else if (command.StartsWith("w "))
+            {
+                goWest();
+            }
+            else if (command.StartsWith("o "))
+            {
+                goEast();
+            }
+            else if (command.StartsWith("h "))
+            {
+                goUp();
+            }
+            else if (command.StartsWith("r "))
+            {
+                goDown();
+            }
         }
         private void inventar(string command)
         {
@@ -53,6 +77,32 @@ namespace MUDServer
                 write("Du hast das Monster bezwungen.");
             else
                 write("Das Monster hat noch " + Convert.ToString(monster_lost) + " Lebenspunkte\n");
+        }
+        private void goNorth()
+        {
+            _enviroment_data.changeRoom("North");
+            if (_enviroment_data.changeRoom() == false)
+
+        }
+        private void goSouth()
+        {
+            _enviroment_data.changeRoom("South");
+        }
+        private void goWest()
+        {
+            _enviroment_data.changeRoom("West");
+        }
+        private void goEast()
+        {
+            _enviroment_data.changeRoom("East");
+        }
+        private void goUp()
+        {
+            _enviroment_data.changeRoom("Up");
+        }
+        private void goDown()
+        {
+            _enviroment_data.changeRoom("Down");
         }
     }
 }
