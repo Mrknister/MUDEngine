@@ -92,23 +92,58 @@ namespace MUDServer
         }
         private void goSouth()
         {
-            _enviroment_data.changeRoom("South");
+            if (!_enviroment_data.changeRoom("South"))
+            {
+                write("Hier geht es nicht weiter!");
+            }
+            else
+            {
+                write("Du gehst nach Süden");
+            }
         }
         private void goWest()
         {
-            _enviroment_data.changeRoom("West");
+            if (!_enviroment_data.changeRoom("West"))
+            {
+                write("Hier geht es nicht weiter!");
+            }
+            else
+            {
+                write("Du gehst nach Westen");
+            }
         }
         private void goEast()
         {
-            _enviroment_data.changeRoom("East");
+            if (!_enviroment_data.changeRoom("East"))
+            {
+                write("Hier geht es nicht weiter!");
+            }
+            else
+            {
+                write("Du gehst nach Osten");
+            }
         }
         private void goUp()
         {
-            _enviroment_data.changeRoom("Up");
+            if (!_enviroment_data.changeRoom("Up"))
+            {
+                write("Hier geht es nicht weiter!");
+            }
+            else
+            {
+                write("Du gehst hoch");
+            }
         }
         private void goDown()
         {
-            _enviroment_data.changeRoom("Down");
+            if (!_enviroment_data.changeRoom("Down"))
+            {
+                write("Hier geht es nicht weiter!");
+            }
+            else
+            {
+                write("Du gehst runter");
+            }
         }
     }
 }
