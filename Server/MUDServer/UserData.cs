@@ -13,11 +13,24 @@ namespace MUDServer
     {
 
         public long U_Id = 0;
-
+        long C_Id = 0;
+        long Money, Health, Mana, Damage, PhRes, MaRes, MaxHealth, MaxMana;
+        string Name;
 
         public UserData()
         {
 
+        }
+        public bool loadAttributes()
+        {
+            if (C_Id == 0)
+                return false;
+
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query = "select Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana where C_Id = ?";
+            exec.add_parameter(C_Id);
+
+            return true;
         }
         public bool selectCharacter(string name)
         {
@@ -94,7 +107,6 @@ namespace MUDServer
             exec.execute_query();
             if (exec.error)
             {
-
                 Console.WriteLine(exec.error_string);
                 return false;
             }
