@@ -80,9 +80,14 @@ namespace MUDServer
         }
         private void goNorth()
         {
-            if ( _enviroment_data.changeRoom("North"))
+
+            if (!_enviroment_data.changeRoom("North"))
             {
-                // tu etwas 
+                write("Hier geht es nicht weiter!");
+            }
+            else
+            {
+                write("Du gehst nach Norden");
             }
 
         }
