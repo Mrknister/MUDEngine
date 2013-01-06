@@ -14,8 +14,8 @@ namespace MUDServer
 
         public long U_Id = 0;
         public long C_Id = 0;
-        string Name;
-        public long Money, Health, Mana;
+        public string Name;
+        public long Money, Health, Mana,Damage,PhRes,MaRes;
 
         public UserData()
         {
@@ -27,7 +27,7 @@ namespace MUDServer
                 return false;
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
-            exec.query = "select Money,Health,Mana where C_Id = ?";
+            exec.query = "select Money,Health,Mana,Damage,PhRes,MaRes where C_Id = ?";
             exec.add_parameter(C_Id);
             exec.execute_query();
             if (exec.error)
@@ -43,10 +43,88 @@ namespace MUDServer
             Money = Convert.ToInt64(attributes[0]);
             Health = Convert.ToInt64(attributes[1]);
             Mana = Convert.ToInt64(attributes[2]);
+            Damage = Convert.ToInt64(attributes[3]);
+            PhRes = Convert.ToInt64(attributes[4]);
+            MaRes = Convert.ToInt64(attributes[5]);
             return true;
+        }
+        public bool saveAttributes()
+        {
+            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+            exec.query = "update `Character` set Name=?,Money=?,Health=?,Mana=?,Damage=?,PhRes=?,MaRes=? where C_Id =?";
+            exec.add_parameter(Name);
+            exec.add_parameter(Money);
+            exec.add_parameter(Health);
+            exec.add_parameter(Mana);
+            exec.add_parameter(Damage);
+            exec.add_parameter(PhRes);
+            exec.add_parameter(MaRes);
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            return true;
+            
         }
         public bool attackMonster(string monstername)
         {
+
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            // load monster attributes
+            exec.query = "select `Monster`.M_Id,`Monster`.PhRes,`Monster`.Damage,MIIn.Health,MIIn.Mana from Monster,MonsterIsIn,`Character` as MIIn where `Monster`.M_Id=MIIn.M_Id and MIIn.RespawnAtTime < NOW() and `Monster`.R_Id=`Character`.R_Id";
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            if (!exec.HasRows) // no monster with this name
+            {
+                return false;
+            }
+
+            long M_Id = Convert.ToInt64(exec.result[0][0]);
+            long M_PhRes = Convert.ToInt64(exec.result[0][1]);
+            long M_Damage = Convert.ToInt64(exec.result[0][2]);
+            long M_Health = Convert.ToInt64(exec.result[0][3]);
+            long M_Mana = Convert.ToInt64(exec.result[0][4]);
+
+            //load and calculate player attributes
+            exec = new ReadableSQLExecuter();
+
+            long damage = this.Damage;
+            long phres = this.PhRes;
+
+            // load weapon damage
+            exec.query = "select sum(`Weapon`.Damage)  from `Weapon`,`BelongsTo` where and `Weapon`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=true and `BelongsTo`.C_Id = ?"; 
+            exec.execute_query();
+            damage += Convert.ToInt64(exec.result[0][0]);
+
+            //load buff damage
+            exec.query = "select sum(Amount) from `Buff` where  Type=1 and RunsOutAt > now() and C_Id = ? ";
+            exec.execute_query();
+            damage += Convert.ToInt64(exec.result[0][0]);
+
+            // load armor res
+            exec.query = "select sum(`Armor`.PhyRes)  from `Armor`,`BelongsTo` where and `Armor`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=true and `BelongsTo`.C_Id = ?";
+            exec.execute_query();
+            phres += Convert.ToInt64(exec.result[0][0]);
+
+            //load buff res
+            exec.query = "select sum(Amount) from `Buff` where  Type=2 and RunsOutAt > now() and C_Id = ? ";
+            exec.execute_query();
+            phres += Convert.ToInt64(exec.result[0][0]);
+
+            if (exec.error) // an error occured somewhere during the loading of the player attributes
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+
+
             return true;
         }
 
