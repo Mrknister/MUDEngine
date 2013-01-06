@@ -73,6 +73,10 @@ namespace MUDServer
                 write("Gebe einen Nutzernamen ein\n");
                 changeStatus(1);
             }
+            else
+            {
+                write("Wie bitte? Ich habe dich nicht verstanden\n");
+            }
         }
 
         private void interpretRegister(string Message)//case 1
@@ -80,7 +84,7 @@ namespace MUDServer
             if (substatus == 0)
             {
                 user_name = Message.Trim();
-                write("Gebe nun das Passwort ein\n");
+                write("Gebe nun das Passwort ein (mindestens 8 Zeichen)\n");
                 substatus++;
             }
             
@@ -99,8 +103,6 @@ namespace MUDServer
                     return;
                 }
 
-
-
                 this._user_data = new UserData();
                 if (this._user_data.register(user_name, password))
                 {
@@ -108,11 +110,13 @@ namespace MUDServer
                 }
                 else
                 {
-                    write("Registrierung fehlgeschlagen! Der Benutzer existiert bereits, der Benutzername enthält ungültige Zeichen oder dein Passwort ist nicht lang genug\n");
+                    write("Registrierung fehlgeschlagen! Der Benutzer existiert bereits, der Benutzername enthält ungueltige Zeichen oder dein Passwort ist nicht lang genug\n");
+                    write("Gebe einen Namen ein\n");
+                    substatus = 0;
+                    return;
                 }
                 changeStatus(0);
             }
-
             else
             {
                 changeStatus(0);
@@ -140,12 +144,14 @@ namespace MUDServer
                 else
                 {
                     write("login fehlgeschlagen!\n");
+                    write("Wenn du ein neuer Nutzer bist tippe 'neu' ein. \nWenn du schon mal hier warst, tippe 'login' ein.\n");
                     changeStatus(0);
                 }
             }
-            
             else
             {
+                write("Wupps! Da ist wochl was schief gelaufen.\n");
+                write("Wenn du ein neuer Nutzer bist tippe 'neu' ein. \nWenn du schon mal hier warst, tippe 'login' ein.\n");
                 changeStatus(0);
             }
         }
@@ -205,6 +211,7 @@ namespace MUDServer
                 else
                 {
                     write("Charakter konnte nicht gewählt werden.\n");
+                    write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
                     substatus--;
                 }
             }
