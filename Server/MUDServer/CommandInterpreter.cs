@@ -17,29 +17,29 @@ namespace MUDServer
             {
                 inventar(command);
             }
-            else if (command.StartsWith("a ")) 
+            else if (command == "a") 
                 angriff(command);
-            else if (command.StartsWith("n "))
+            else if (command == "n")
             {
                 goNorth();
             }
-            else if (command.StartsWith("s "))
+            else if (command == "s")
             {
                 goSouth();
             }
-            else if (command.StartsWith("w "))
+            else if (command == "w")
             {
                 goWest();
             }
-            else if (command.StartsWith("o "))
+            else if (command == "e")
             {
                 goEast();
             }
-            else if (command.StartsWith("h "))
+            else if (command == "u")
             {
                 goUp();
             }
-            else if (command.StartsWith("r "))
+            else if (command == "d")
             {
                 goDown();
             }
