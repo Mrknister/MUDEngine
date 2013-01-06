@@ -19,7 +19,7 @@ namespace MUDServer
             sql.query = "select `Room`.R_Id,`Room`.Name,`Room`.Description from `Room`,`Character` where `Room`.R_Id = `Character`.R_Id";
             R_Id = Convert.ToInt64(sql.result[0][0]);
             R_Name = Convert.ToString(sql.result[0][1]);
-            R_Name = Convert.ToString(sql.result[0][2]);
+            R_Discription = Convert.ToString(sql.result[0][2]);
         }
     }
 }
