@@ -186,7 +186,14 @@ namespace MUDServer
             {
                 string character_name = Message.Trim();
                 _user_data.selectCharacter(character_name);
-                // hier kommt ein aufruf an _user_data.selectCharacter hin
+                if (_user_data.selectCharacter(user_name))
+                {
+                    substatus++;
+                }
+                else
+                {
+                    substatus--;
+                }
             }
 
         }

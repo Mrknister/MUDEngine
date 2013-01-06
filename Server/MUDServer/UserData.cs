@@ -60,7 +60,18 @@ namespace MUDServer
 
         public bool selectCharacter(string name)
         {
-            return false;
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select C_Id from `Character` where Name=? and U_Id=?";
+            sql.add_parameter(name);
+            sql.add_parameter(U_Id);
+            sql.execute_query();
+            
+            if (!sql.HasRows)
+            {
+                return false;
+            }
+            
+            return true;
         }
         public bool login(string name, string password)
         {
