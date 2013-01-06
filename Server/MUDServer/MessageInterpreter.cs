@@ -240,7 +240,7 @@ namespace MUDServer
         
         private void interpretGameLoop(string Message)//case 5
         {
-            write("Status5");
+            _command_interpreter.InterpretCommand(Message);
         }
 
     }
