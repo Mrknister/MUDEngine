@@ -15,11 +15,15 @@ namespace MUDServer
         string user_name = "";
         string password = "";
         UserData _user_data;
+        EnviromentData _enviroment_data;
+        CommandInterpreter _command_interpreter;
 
         public MessageInterpreter(writemethod w)
         {
             write = w;
+            
             write("Wenn du ein neuer Nutzer bist tippe 'neu' ein. \nWenn du schon mal hier warst, tippe 'login' ein.\n");
+
         }
         public void interpretMessage(String message)
         {
@@ -188,7 +192,15 @@ namespace MUDServer
                 if (_user_data.selectCharacter(character_name))
                 {
                     write("Charakter gewählt.\n");
+
+                    _enviroment_data = new EnviromentData(_user_data.C_Id);
+                    _command_interpreter = new CommandInterpreter();
+                    _command_interpreter._enviroment_data = _enviroment_data;
+                    _command_interpreter._user_data = _user_data;
+                    _command_interpreter.write = write;
+
                     changeStatus(5);
+
                 }
                 else
                 {

@@ -7,13 +7,11 @@ namespace MUDServer
 {
     class CommandInterpreter
     {
-        UserData _user_data;
-        MessageInterpreter.writemethod write;
+        public UserData _user_data;
+        public EnviromentData _enviroment_data;
+        public MessageInterpreter.writemethod write;
 
 
-        public CommandInterpreter(UserData data,MessageInterpreter.writemethod method)
-        {
-            this._user_data = data;
-        }
+        
     }
 }

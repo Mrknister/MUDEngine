@@ -7,5 +7,8 @@ namespace MUDServer
 {
     class EnviromentData
     {
+        public EnviromentData(long C_Id)
+        {
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace MUDServer
     {
 
         public long U_Id = 0;
-        long C_Id = 0;
+        public long C_Id = 0;
         string Name;
         long Money, Health, Mana, Damage, PhRes, MaRes, MaxHealth, MaxMana;
 
