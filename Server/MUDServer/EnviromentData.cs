@@ -82,7 +82,9 @@ namespace MUDServer
             }
             loadRoom();
             if (loadRoom() == false)
-            { return false; }
+            {
+                return false;
+            }
             return true;
         }
     }
