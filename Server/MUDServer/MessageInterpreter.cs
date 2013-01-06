@@ -185,7 +185,6 @@ namespace MUDServer
             else if (substatus == 1)
             {
                 string character_name = Message.Trim();
-                _user_data.selectCharacter(character_name);
                 if (_user_data.selectCharacter(user_name))
                 {
                     substatus++;
