@@ -186,7 +186,7 @@ namespace MUDServer
             {
                 string character_name = Message.Trim();
                 _user_data.selectCharacter(character_name);
-                if (_user_data.selectCharacter(user_name))
+                if (_user_data.selectCharacter(character_name))
                 {
                     substatus++;
                 }
@@ -196,6 +196,10 @@ namespace MUDServer
                 }
             }
 
+            else if (substatus == 2)
+            {
+            
+            }
         }
         
         private void interpretCharacterBuild(string Message)//case 4
