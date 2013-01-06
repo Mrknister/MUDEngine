@@ -15,7 +15,7 @@ namespace MUDClient
         static void Main(string[] args)
         {
             Console.Write("Bitte geben sie den Hostnamen ein: localhost\n");
-            String host_name = "localhost"; // Console.ReadLine();
+            String host_name = "localhost";
             TcpClient client;
 
 
