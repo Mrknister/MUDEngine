@@ -1,0 +1,9 @@
+UML-updates
+_____________
+nehme ...
+item aus einem raum nehmen, respawnAtTime updaten und Item ins Inventar tun
+
+_____________________
+
+nehme ... aus ...
+
