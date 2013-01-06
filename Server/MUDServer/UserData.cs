@@ -54,6 +54,7 @@ namespace MUDServer
         public bool loadItems()
         {
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query="Select I_Id,Amount,Equipped, fr"
 
             return true;
         }
@@ -110,7 +111,7 @@ namespace MUDServer
             sql.add_parameter(name);
             sql.execute_query();
             
-            if (!sql.HasRows)
+            if (sql.HasRows)
             {
                 return false;
             }
