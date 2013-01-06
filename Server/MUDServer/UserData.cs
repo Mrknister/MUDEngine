@@ -16,7 +16,6 @@ namespace MUDServer
         long C_Id = 0;
         string Name;
         long Money, Health, Mana, Damage, PhRes, MaRes, MaxHealth, MaxMana;
-        public List<string> Items;
 
         public UserData()
         {
@@ -51,12 +50,28 @@ namespace MUDServer
             MaxMana = Convert.ToInt64(attributes[7]);
             return true;
         }
-        public bool loadItems()
+        public List<string> loadItems()
         {
-            ReadableSQLExecuter exec = new ReadableSQLExecuter();
-            exec.query="Select I_Id,Amount,Equipped, fr"
+            List<string> to_return = new List<string>();
+            if (C_Id == 0)
+                return to_return;
 
-            return true;
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query = "Select BelongsTo.I_Id,BelongsTo.Amount,BelongsTo.Equipped,Item.Name from BelongsTo,Item where BelongsTo.C_Id=? and BelongsTo.I_Id = Item.I_Id";
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            foreach (object[] tmp in exec.result)
+            {
+                string message="";
+                if (Convert.ToBoolean(tmp[2]))
+                {
+                    message = "* ";
+                }
+                message += Convert.ToString(tmp[3]);
+                message += "(" + Convert.ToString(tmp[1]) + ")";
+                to_return.Add(message);
+            }
+            return to_return;
         }
 
         public bool selectCharacter(string name)
@@ -71,7 +86,8 @@ namespace MUDServer
             {
                 return false;
             }
-            
+            C_Id = Convert.ToInt64(sql.result[0][0]);
+
             return true;
         }
         public bool login(string name, string password)
