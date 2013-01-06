@@ -10,3 +10,6 @@ insert into Character (Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMa
 select CId from Character where name = user_character
 
 insert into CharToUser (UId,CId) values (?,?)
+
+Load RoomData
+ select `Room`.R_Id,`Room`.Name,`Room`.Description from `Room`,`Character` where `Room`.R_Id = `Character`.R_Id
