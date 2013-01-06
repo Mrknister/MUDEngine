@@ -60,6 +60,13 @@ namespace MUDServer
             exec.query = "Select BelongsTo.I_Id,BelongsTo.Amount,BelongsTo.Equipped,Item.Name from BelongsTo,Item where BelongsTo.C_Id=? and BelongsTo.I_Id = Item.I_Id";
             exec.add_parameter(C_Id);
             exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return to_return;
+            }
+            if (!exec.HasRows)
+                Console.WriteLine("Leer");
             foreach (object[] tmp in exec.result)
             {
                 string message="";

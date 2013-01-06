@@ -188,16 +188,19 @@ namespace MUDServer
                 if (_user_data.selectCharacter(character_name))
                 {
                     substatus++;
+                    write("Character auswahl erfolgreich\n");
+                    
                 }
                 else
                 {
+                    write("Character nicht gefunden\n");
                     substatus--;
                 }
             }
 
             else if (substatus == 2)
             {
-            
+                
             }
         }
         
