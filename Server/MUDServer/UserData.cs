@@ -127,7 +127,7 @@ namespace MUDServer
             sql.add_parameter(name);
             sql.execute_query();
             
-            if (sql.HasRows)
+            if (!sql.HasRows)
             {
                 return false;
             }
