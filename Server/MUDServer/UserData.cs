@@ -15,7 +15,7 @@ namespace MUDServer
         public long U_Id = 0;
         public long C_Id = 0;
         string Name;
-        long Money, Health, Mana, Damage, PhRes, MaRes, MaxHealth, MaxMana;
+        public long Money, Health, Mana;
 
         public UserData()
         {
@@ -27,7 +27,7 @@ namespace MUDServer
                 return false;
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
-            exec.query = "select Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana where C_Id = ?";
+            exec.query = "select Money,Health,Mana where C_Id = ?";
             exec.add_parameter(C_Id);
             exec.execute_query();
             if (exec.error)
@@ -40,16 +40,16 @@ namespace MUDServer
                 return false;
             }
             object[] attributes = exec.result[0];
-            Name = Convert.ToString(attributes[0]);
-            Money = Convert.ToInt64(attributes[1]);
-            Health = Convert.ToInt64(attributes[2]);
-            Damage = Convert.ToInt64(attributes[3]);
-            PhRes = Convert.ToInt64(attributes[4]);
-            MaRes = Convert.ToInt64(attributes[5]);
-            MaxHealth = Convert.ToInt64(attributes[6]);
-            MaxMana = Convert.ToInt64(attributes[7]);
+            Money = Convert.ToInt64(attributes[0]);
+            Health = Convert.ToInt64(attributes[1]);
+            Mana = Convert.ToInt64(attributes[2]);
             return true;
         }
+        public bool attackMonster(string monstername)
+        {
+            return true;
+        }
+
         public List<string> loadItems()
         {
             List<string> to_return = new List<string>();
@@ -94,6 +94,7 @@ namespace MUDServer
                 return false;
             }
             C_Id = Convert.ToInt64(sql.result[0][0]);
+            this.Name = name;
 
             return true;
         }
