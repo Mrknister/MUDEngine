@@ -68,7 +68,7 @@ namespace MUDServer
             exec.add_parameter(R_Id);
             exec.add_parameter(C_Id);
             exec.execute_query();
-            if (sql.error)
+            if (exec.error)
             {
                 Console.WriteLine(sql.error_string);
                 return false;

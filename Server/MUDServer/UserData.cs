@@ -14,8 +14,9 @@ namespace MUDServer
 
         public long U_Id = 0;
         public long C_Id = 0;
+        public long R_Id;
         public string Name;
-        public long Money, Health, Mana,Damage,PhRes,MaRes;
+        public long Money, Health, Mana, Damage, PhRes, MaRes;
 
         public UserData()
         {
@@ -27,7 +28,7 @@ namespace MUDServer
                 return false;
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
-            exec.query = "select Money,Health,Mana,Damage,PhRes,MaRes where C_Id = ?";
+            exec.query = "select Money,Health,Mana,Damage,PhRes,MaRes,R_Id where C_Id = ?";
             exec.add_parameter(C_Id);
             exec.execute_query();
             if (exec.error)
@@ -46,6 +47,7 @@ namespace MUDServer
             Damage = Convert.ToInt64(attributes[3]);
             PhRes = Convert.ToInt64(attributes[4]);
             MaRes = Convert.ToInt64(attributes[5]);
+            R_Id = Convert.ToInt64(attributes[6]);
             return true;
         }
         public bool saveAttributes()
@@ -67,10 +69,11 @@ namespace MUDServer
                 return false;
             }
             return true;
-            
+
         }
-        public bool attackMonster(string monstername)
+        public long attackMonster(string monstername)
         {
+            loadAttributes();
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
             // load monster attributes
@@ -79,11 +82,11 @@ namespace MUDServer
             if (exec.error)
             {
                 Console.WriteLine(exec.error_string);
-                return false;
+                return -1;
             }
             if (!exec.HasRows) // no monster with this name
             {
-                return false;
+                return -1;
             }
 
             long M_Id = Convert.ToInt64(exec.result[0][0]);
@@ -94,6 +97,7 @@ namespace MUDServer
 
             //load and calculate player attributes
             exec = new ReadableSQLExecuter();
+            exec.add_parameter(C_Id); // works for all queries
 
             long damage = this.Damage;
             long phres = this.PhRes;
@@ -117,15 +121,46 @@ namespace MUDServer
             exec.query = "select sum(Amount) from `Buff` where  Type=2 and RunsOutAt > now() and C_Id = ? ";
             exec.execute_query();
             phres += Convert.ToInt64(exec.result[0][0]);
-
             if (exec.error) // an error occured somewhere during the loading of the player attributes
             {
                 Console.WriteLine(exec.error_string);
-                return false;
+                return -1;
             }
 
+            long m_caused_dmg = M_Damage - phres;
+            long p_caused_dmg = damage - M_PhRes;
+            if (m_caused_dmg < 1)
+                m_caused_dmg = 1;
 
-            return true;
+            if (p_caused_dmg < 1)
+                p_caused_dmg = 1;
+
+            //this.Health -= m_caused_dmg
+
+            M_Health -= p_caused_dmg;
+
+            UnreadableSQLExecuter u_exec = new UnreadableSQLExecuter();
+
+            if (M_Health < 0) //congrats... you killed it
+            {
+                u_exec.query = "update `MonsterInRoom`,`Character`,`Monster` set `MonsterInRoom`.RespawnAtTime=`MonsterInRoom`.RespawnTime+now(),`MonsterInRoom`.Health =`Monster`.MaxHealth  where `MonsterInRoom`.M_Id=? and `MonsterInRoom`.R_Id=`Character`.R_Id and `Character`.C_Id =?";
+                u_exec.add_parameter(M_Id);
+                u_exec.add_parameter(C_Id);
+                u_exec.execute_query();
+                return 0;
+               
+            }
+
+            
+            u_exec.query = "update `MonsterInRoom`,`Character` set `MonsterInRoom`.Health=? where `MonsterInRoom`.M_Id=? and `MonsterInRoom`.R_Id=`Character`.R_Id and `Character`.C_Id =?";
+            u_exec.add_parameter(M_Health);
+            u_exec.add_parameter(M_Id);
+            u_exec.add_parameter(C_Id);
+            u_exec.execute_query();
+
+            this.Health -= m_caused_dmg;
+            saveAttributes();
+            return M_Health;
         }
 
         public List<string> loadItems()
@@ -147,7 +182,7 @@ namespace MUDServer
                 Console.WriteLine("Leer");
             foreach (object[] tmp in exec.result)
             {
-                string message="";
+                string message = "";
                 if (Convert.ToBoolean(tmp[2]))
                 {
                     message = "* ";
@@ -166,7 +201,7 @@ namespace MUDServer
             sql.add_parameter(name);
             sql.add_parameter(U_Id);
             sql.execute_query();
-            
+
             if (!sql.HasRows)
             {
                 return false;
@@ -212,7 +247,7 @@ namespace MUDServer
             sql.query = "select C_Id from `Character` where Name=?";
             sql.add_parameter(name);
             sql.execute_query();
-            
+
             if (!sql.HasRows)
             {
                 return false;
