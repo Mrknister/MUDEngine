@@ -178,7 +178,7 @@ namespace MUDServer
                         write("Du hast noch keinen Charakter!\n");
                         changeStatus(4);
                     }
-                    write("Wähle aus der Liste den Charakter mit dem du spielen willst\n");
+                    write("Waehle aus der Liste den Charakter mit dem du spielen willst\n");
                     foreach (object[] names in sql.result)
                     {
                         name = Convert.ToString(names[0]);
@@ -197,7 +197,7 @@ namespace MUDServer
                 string character_name = Message.Trim();
                 if (_user_data.selectCharacter(character_name))
                 {
-                    write("Charakter gewählt.\n");
+                    write("Charakter gewaehlt.\n");
 
                     _enviroment_data = new EnviromentData(_user_data.C_Id);
                     _command_interpreter = new CommandInterpreter();
@@ -210,7 +210,7 @@ namespace MUDServer
                 }
                 else
                 {
-                    write("Charakter konnte nicht gewählt werden.\n");
+                    write("Charakter konnte nicht gewaehlt werden.\n");
                     write("Um einen Charakter zu waehlen tippe: wahl \nUm einen neuen Charakter zu erstellen tippe: neu\n");
                     substatus--;
                 }
