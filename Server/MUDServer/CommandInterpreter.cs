@@ -60,7 +60,7 @@ namespace MUDServer
         {
             if (command.StartsWith("a "))
             {
-                command = command.Remove(0, 1);
+                command = command.Remove(0, 2);
                 command = command.Trim();
             }
             long curr_health = _user_data.Health;
@@ -71,7 +71,7 @@ namespace MUDServer
             }
             if (monster_lost == -1)
             {
-                write("Ich kann das Monster "+command+"nicht finden.");
+                write("Ich kann das Monster "+command+" nicht finden.");
             }
             else if (monster_lost == 0)
                 write("Du hast das Monster bezwungen.");

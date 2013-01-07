@@ -80,7 +80,7 @@ namespace MUDServer
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
             // load monster attributes
-            exec.query = "select `Monster`.M_Id,`Monster`.Damage,MIIn.Health,MIIn.Mana from Monster,MonsterIsIn as MIIn,`Character` where `Monster`.M_Id=MIIn.M_Id and MIIn.RespawnAtTime > NOW() and MIIn.R_Id=? and `Monster`.Name=?";
+            exec.query = "select `Monster`.M_Id, `Monster`.Damage, MIIn.Health, MIIn.Mana from Monster, MonsterIsIn as MIIn where `Monster`.M_Id=MIIn.M_Id and MIIn.RespawnAtTime > NOW() and MIIn.R_Id=? and `Monster`.Name=?";
             exec.add_parameter(R_Id);
             exec.add_parameter(monstername);
             exec.execute_query();
@@ -91,6 +91,7 @@ namespace MUDServer
             }
             if (!exec.HasRows) // no monster with this name
             {
+                Console.WriteLine("No monster");
                 return -1;
             }
 
