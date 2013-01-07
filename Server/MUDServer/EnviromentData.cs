@@ -14,21 +14,28 @@ namespace MUDServer
         public EnviromentData(long C_Id)
         {
             this.C_Id = C_Id;
+            loadRoom();
         }
         public bool loadRoom()
         {
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
-            sql.query = "select `Room`.R_Id,`Room`.Name,`Room`.Description from `Room`,`Character` where `Room`.R_Id = `Character`.R_Id";
-            R_Id = Convert.ToInt64(sql.result[0][0]);
-            R_Name = Convert.ToString(sql.result[0][1]);
-            R_Discription = Convert.ToString(sql.result[0][2]);
+            sql.query = "select `Room`.R_Id,`Room`.Name,`Room`.Description from `Room`,`Character` where `Room`.R_Id = `Character`.R_Id and `Character`.C_Id=?";
+            sql.add_parameter(C_Id);
             sql.execute_query();
-            
             if (sql.error)
             {
                 Console.WriteLine(sql.error_string);
                 return false;
             }
+            if(!sql.HasRows)
+            {
+                Console.WriteLine("Character Id not found");
+                return false;
+            }
+            R_Id = Convert.ToInt64(sql.result[0][0]);
+            R_Name = Convert.ToString(sql.result[0][1]);
+            R_Discription = Convert.ToString(sql.result[0][2]);
+
             return true;
         }
         public List<string> loadMonster()
