@@ -17,7 +17,7 @@ namespace MUDServer
             {
                 inventar(command);
             }
-            else if (command.StartsWith("a")) 
+            else if (command.StartsWith("a ")) 
                 angriff(command);
             else if (command == "n")
             {
