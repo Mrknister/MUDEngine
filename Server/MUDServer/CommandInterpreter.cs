@@ -31,15 +31,15 @@ namespace MUDServer
             {
                 goWest();
             }
-            else if (command == "e")
+            else if (command == "o")
             {
                 goEast();
             }
-            else if (command == "u")
+            else if (command == "h")
             {
                 goUp();
             }
-            else if (command == "d")
+            else if (command == "r")
             {
                 goDown();
             }
@@ -83,11 +83,11 @@ namespace MUDServer
 
             if (!_enviroment_data.changeRoom("North"))
             {
-                write("Hier geht es nicht weiter!");
+                write("Hier geht es nicht weiter!\n");
             }
             else
             {
-                write("Du gehst nach Norden");
+                write("Du gehst nach Norden\n");
             }
 
         }
@@ -95,55 +95,55 @@ namespace MUDServer
         {
             if (!_enviroment_data.changeRoom("South"))
             {
-                write("Hier geht es nicht weiter!");
+                write("Hier geht es nicht weiter!\n");
             }
             else
             {
-                write("Du gehst nach Süden");
+                write("Du gehst nach Süden\n");
             }
         }
         private void goWest()
         {
             if (!_enviroment_data.changeRoom("West"))
             {
-                write("Hier geht es nicht weiter!");
+                write("Hier geht es nicht weiter!\n");
             }
             else
             {
-                write("Du gehst nach Westen");
+                write("Du gehst nach Westen\n");
             }
         }
         private void goEast()
         {
             if (!_enviroment_data.changeRoom("East"))
             {
-                write("Hier geht es nicht weiter!");
+                write("Hier geht es nicht weiter!\n");
             }
             else
             {
-                write("Du gehst nach Osten");
+                write("Du gehst nach Osten\n");
             }
         }
         private void goUp()
         {
             if (!_enviroment_data.changeRoom("Up"))
             {
-                write("Hier geht es nicht weiter!");
+                write("Hier geht es nicht weiter!\n");
             }
             else
             {
-                write("Du gehst hoch");
+                write("Du gehst hoch\n");
             }
         }
         private void goDown()
         {
             if (!_enviroment_data.changeRoom("Down"))
             {
-                write("Hier geht es nicht weiter!");
+                write("Hier geht es nicht weiter!\n");
             }
             else
             {
-                write("Du gehst runter");
+                write("Du gehst runter\n");
             }
         }
     }
