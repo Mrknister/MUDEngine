@@ -80,6 +80,7 @@ namespace MUDServer
         }
         private void goNorth()
         {
+
             if (!_enviroment_data.changeRoom("North"))
             {
                 write("Hier geht es nicht weiter!");
