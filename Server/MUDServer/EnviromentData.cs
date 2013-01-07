@@ -59,7 +59,7 @@ namespace MUDServer
             sql.add_parameter(R_Id);
             sql.add_parameter(direction);
             sql.execute_query();
-            R_Id = Convert.ToInt64(sql.result[0][0]);
+
             if (sql.error)
             {
                 Console.WriteLine(sql.error_string);
@@ -69,7 +69,8 @@ namespace MUDServer
             {
                 return false;
             }
-            
+            R_Id = Convert.ToInt64(sql.result[0][0]);
+
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
             exec.query = "update `Character` set R_Id=? where C_Id=?";
             exec.add_parameter(R_Id);
