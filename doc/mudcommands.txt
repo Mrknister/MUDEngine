@@ -25,24 +25,18 @@ change Room
 
 takeFrom
 (get I_Id) 
-select I_Id from `Takeable`,`Objekt`,`ObjInRoom`
-where `Takeable`.O_Id=`Objekt`.O_Id
-and `Objekt`.O_Id=`ObjInRoom`.O_Id
-and `Takeable`.TakeFrom=?
-and `Objekt`.Name=?
-and 'ObjInRoom'.R_Id=?
-
+select I_Id from `Takeable`,`Objekt`,`ObjInRoom` where `Takeable`.O_Id=`Objekt`.O_Id and `Objekt`.O_Id=`ObjInRoom`.O_Id and `Takeable`.TakeFrom=? and `Objekt`.Name=? and `ObjInRoom`.R_Id=?
 (update RespawnAtTime)
 update `Takeable` set RespawnAtTime=RespawnAtTime+RespawnTime
 
 (prüfen ob schon in besitz)
-select * from `BelongsTo`
-where I_Id=? and C_Id=?
+select * from `BelongsTo` where I_Id=? and C_Id=?
 
+(in besitz)
+update `BelongsTo` set Amount=Amount+1 where I_Id=? and C_Id=?
 (nicht in besitz)
 insert into `BelongsTo` (I_Id,C_Id,Amount) values (?,?,1)
-(in besitz)
-update `BelongsTo` set Amount=Amount+1 where I_Id=? and C_Id=? 
+ 
 
 
  
