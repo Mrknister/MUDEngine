@@ -43,6 +43,8 @@ namespace MUDServer
             {
                 goDown();
             }
+            else if (command.StartsWith("nimm aus"))
+                angriff(command);
         }
         private void inventar(string command)
         {
@@ -145,6 +147,10 @@ namespace MUDServer
             {
                 write("Du gehst runter\n");
             }
+        }
+        private void takefrom(string command)
+        { 
+        
         }
     }
 }

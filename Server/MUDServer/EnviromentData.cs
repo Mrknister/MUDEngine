@@ -129,6 +129,9 @@ namespace MUDServer
                 exec.add_parameter(C_Id);
                 exec.execute_query();
             }
+            UnreadableSQLExecuter exec2 = new UnreadableSQLExecuter();
+            exec2.query = "update `Takeable` set RespawnAtTime=RespawnAtTime+RespawnTime";
+            exec2.execute_query();
             return true;
         }
     }
