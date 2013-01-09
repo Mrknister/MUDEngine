@@ -95,5 +95,9 @@ namespace MUDServer
             }
             return true;
         }
+        public bool takeFrom()
+        {
+            return true;
+        }
     }
 }
