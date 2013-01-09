@@ -103,6 +103,11 @@ namespace MUDServer
             sql.add_parameter(ObjectName);
             sql.add_parameter(R_Id);
             sql.execute_query();
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return false;
+            }
             long I_Id = Convert.ToInt64(sql.result[0][0]);
             if (!sql.HasRows)
             {
@@ -113,6 +118,11 @@ namespace MUDServer
             sql.add_parameter(I_Id);
             sql.add_parameter(C_Id);
             sql.execute_query();
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return false;
+            }
             if (sql.HasRows)
             {
                 UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
@@ -120,6 +130,11 @@ namespace MUDServer
                 exec.add_parameter(I_Id);
                 exec.add_parameter(C_Id);
                 exec.execute_query();
+                if (exec.error)
+                {
+                    Console.WriteLine(sql.error_string);
+                    return false;
+                }
             }
             else
             {
@@ -128,6 +143,11 @@ namespace MUDServer
                 exec.add_parameter(I_Id);
                 exec.add_parameter(C_Id);
                 exec.execute_query();
+                if (exec.error)
+                {
+                    Console.WriteLine(sql.error_string);
+                    return false;
+                }
             }
             UnreadableSQLExecuter exec2 = new UnreadableSQLExecuter();
             exec2.query = "update `Takeable` set RespawnAtTime=RespawnAtTime+RespawnTime";
