@@ -160,7 +160,7 @@ namespace MUDServer
             command = command.Trim();
             if (_enviroment_data.takeFrom("", command))
             {
-                write("Der Gegenstand: " + command + " wurde aufgenommen.");
+                write("Der Gegenstand wurde aufgenommen.");
             }
             else
             {
@@ -171,13 +171,21 @@ namespace MUDServer
         {
             command = command.Remove(0, 8);
             command = command.Trim();
-            write("");
+            write("Wähle nun den Gegenstand");
 
 
         }
-        private void executeTakeFrom(string source,string command)
-        { 
-        
+        private void executeTakeFrom(string command)
+        {
+            string command2 = command.Trim();
+            if (_enviroment_data.takeFrom("", command))
+            {
+                write("Der Gegenstand wurde aufgenommen.");
+            }
+            else
+            {
+                write("Der Gegenstand konnte nicht aufgenommen werden.");
+            }
         }
     }
 }
