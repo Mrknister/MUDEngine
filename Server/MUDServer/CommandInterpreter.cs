@@ -43,8 +43,14 @@ namespace MUDServer
             {
                 goDown();
             }
-            else if (command.StartsWith("nimm aus"))
-                angriff(command);
+            else if (command.StartsWith("nimm "))
+            {
+                take(command);
+            }
+            else if (command.StartsWith("nimm_aus"))
+            {
+                prepareTakeFrom(command);
+            }
         }
         private void inventar(string command)
         {
@@ -148,7 +154,28 @@ namespace MUDServer
                 write("Du gehst runter\n");
             }
         }
-        private void takefrom(string command)
+        private void take(string command) 
+        {
+            command = command.Remove(0, 4);
+            command = command.Trim();
+            if (_enviroment_data.takeFrom("", command))
+            {
+                write("Der Gegenstand: " + command + " wurde aufgenommen.");
+            }
+            else
+            {
+                write("Der Gegenstand konnte nicht aufgenommen werden.");
+            }
+        }
+        private void prepareTakeFrom(string command)
+        {
+            command = command.Remove(0, 8);
+            command = command.Trim();
+            write("");
+
+
+        }
+        private void executeTakeFrom(string source,string command)
         { 
         
         }
