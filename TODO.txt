@@ -1,14 +1,4 @@
 UML-updates
-_____________________
-
-nehme ...
-gucken ob Item im Raum ist, aufpassen, dass Takefrom leer ist, respawnAtTime updaten und Item ins Inventar tun ihr könnt euch die attack funktion anschauen (, aufhören zu weinen und nochmal anschauen) für vergleiche.
-ich würde in EnviromentData nur eine Funktion (z.B.  public bool take(string Item, string from) )für "nehme ..." und "nehme ... aus ..." rein machen und bei "nehme ..." einfach from auf "" setzen
-_____________________
-
-nehme ... aus ...
-eigendlich das gleiche wie oben, nur dass jetzt takefrom berücksichtigt wird.
-Um die Parameter korrekt zu Interpretieren, würde ich zuerst nehme wegremoven und dann alles bis zum ersten " aus " (man beachte die Leerzeichen) wegsplitten und das in einem string speichern, dann das " aus " wegmachen, und dann den ersten string und das was übrig bleibt als parameter übergeben.
 
 _____________________
 
@@ -25,3 +15,8 @@ _____________________
 
 ablegen ...
 equipped auf false setzen
+
+=========================
+Nice to have:
+
+Change the table that takefrom points to an object id.

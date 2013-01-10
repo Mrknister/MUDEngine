@@ -107,7 +107,7 @@ namespace MUDServer
 
             // load weapon damage
             exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id); 
+            exec.add_parameter(C_Id);
             exec.query = "select sum(`Weapon`.Damage)  from `Weapon`,`BelongsTo` where `Weapon`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id = ?";
             exec.execute_query();
             if (exec.error) // an error occured somewhere during the loading of the player attributes
@@ -123,7 +123,7 @@ namespace MUDServer
 
             //load buff damage
             exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id); 
+            exec.add_parameter(C_Id);
             exec.query = "select sum(Amount) from `Buff` where  Type=1 and RunsOutAt > now() and C_Id = ?";
             exec.execute_query();
             if (exec.error) // an error occured somewhere during the loading of the player attributes
@@ -133,13 +133,13 @@ namespace MUDServer
             }
             if (exec.HasRows)
             {
-                if(exec.result[0][0]!=DBNull.Value)
+                if (exec.result[0][0] != DBNull.Value)
                     damage += Convert.ToInt64(exec.result[0][0]);
             }
 
             // load armor res
             exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id); 
+            exec.add_parameter(C_Id);
             exec.query = "select sum(`Armor`.PhyRes)  from `Armor`,`BelongsTo` where `Armor`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id = ?";
             exec.execute_query();
             if (exec.error) // an error occured somewhere during the loading of the player attributes
@@ -155,7 +155,7 @@ namespace MUDServer
 
             //load buff res
             exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id); 
+            exec.add_parameter(C_Id);
             exec.query = "select sum(Amount) from `Buff` where  Type=2 and RunsOutAt > now() and C_Id = ? ";
             exec.execute_query();
             if (exec.error) // an error occured somewhere during the loading of the player attributes
@@ -308,7 +308,7 @@ namespace MUDServer
                 return false;
             }
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-            exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana) values (?,?,200,100,100,10,10,10,100,100)";
+            exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana,R_Id) values (?,?,200,100,100,10,10,10,100,100,1)";
 
             exec.add_parameter(U_Id);
             exec.add_parameter(name);
@@ -375,7 +375,7 @@ namespace MUDServer
         }
         public long equip(string to_equip)
         {
-            Console.WriteLine("\""+to_equip+"\"");
+            Console.WriteLine("\"" + to_equip + "\"");
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
             exec.query = "select Item.I_Id,Item.Category,BelongsTo.Equipped from BelongsTo,Item where Item.I_Id=BelongsTo.I_Id and Item.Name=? and BelongsTo.C_Id=?";
             exec.add_parameter(to_equip);
@@ -395,9 +395,62 @@ namespace MUDServer
                 return -3;
             }
             int category = Convert.ToInt32(exec.result[0][1]);
-
+            long I_Id = Convert.ToInt64(exec.result[0][0]);
+            if (category == 1)
+            {
+                
+                if (!unequip_armor(I_Id))
+                {
+                    return -1;
+                }
+            }
+            else if (category == 2)
+            {
+                if (!unequip_weapon())
+                {
+                    return -1;
+                }
+            }
+            else//it is nothing you can equip
+            {
+                return -4;
+            }
+            UnreadableSQLExecuter u_exec = new UnreadableSQLExecuter();
+            u_exec.query = "Update `BelongsTo` set Equipped =1 where C_Id=? and I_Id=?";
+            u_exec.add_parameter(C_Id);
+            u_exec.add_parameter(I_Id);
             return 0;
         }
+        private bool unequip_armor(long I_Id) // it is assumed that the user ownes this item
+        {
+            // find out if an armor of this type is allready equipped
+            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+            exec.query = "update `BelongsTo`,`Armor` set `BelongsTo`.Equipped = 0 where `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id=? and `Armor`.Type in (select Type from Armor where I_Id=?)";
+            exec.add_parameter(C_Id);
+            exec.add_parameter(I_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            
+            return true;
+        }
+        private bool unequip_weapon() // here as well
+        {
+            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+            exec.query = "update `BelongsTo`,`Item` set `BelongsTo`.Equipped=0 where `Item`.Type=2 and `BelongsTo`.C_Id = ?";
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            return true;
+        }
+
 
     }
 }
