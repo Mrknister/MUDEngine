@@ -59,7 +59,7 @@ namespace MUDServer
             }
             return monster_list;
         }
-        public bool changeRoom (string direction)
+        public bool changeRoom(string direction)
         {
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
             sql.query = "select R_IdT from `Gate` where R_IdF=? and Direction=?";

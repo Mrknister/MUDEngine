@@ -49,11 +49,15 @@ namespace MUDServer
             }
             else if (command.StartsWith("nimm "))
             {
-                take(command);
+                
+                
+                    nimm(command);
+                
+                
             }
-            else if (command.StartsWith("nimm_aus"))
+            else
             {
-                prepareTakeFrom(command);
+                write("Ich habe dich nicht verstanden.");
             }
         }
         private void inventar(string command)
@@ -172,25 +176,54 @@ namespace MUDServer
             command = command.Trim();
             _user_data.equip(command);
         }
-        private void take(string command) 
+        
+        private void nimm(string command)
         {
-            command = command.Remove(0, 4);
-            command = command.Trim();
-            Console.WriteLine(command);
-            if (_enviroment_data.takeFrom("", command))
+            string object_name, from_name;
+            
+            if (command.Contains(" aus "))
             {
-                write("Der Gegenstand wurde aufgenommen.\n");
+                if (command.StartsWith("nimm ")) // in case some idiot removed the nehme somewhere before
+                {
+                    command = command.Remove(0, 5);
+                }
+
+                command = command.Trim();
+                object_name = command.Remove(command.IndexOf(" aus "));
+                object_name = object_name.Trim();
+
+                from_name = command.Remove(0, command.IndexOf(" aus ")+6); // plus 6 because index of returns index and no the number of characters
+                from_name = from_name.Trim();
+
+                Console.WriteLine(object_name+"|"+from_name);
+
+                if (_enviroment_data.takeFrom(from_name, object_name))
+                {
+                    write("Der Gegenstand wurde aufgenommen.\n");
+                }
+                else
+                {
+                    write("Der Gegenstand konnte nicht aufgenommen werden.\n");
+                }
             }
             else
             {
-                write("Der Gegenstand konnte nicht aufgenommen werden.\n");
+                if (command.StartsWith("nimm "))
+                {
+                    command = command.Remove(0, 5);
+                }
+                command = command.Trim();
+
+                if (_enviroment_data.takeFrom("", command))
+                {
+                    write("Der Gegenstand wurde aufgenommen.\n");
+                }
+                else
+                {
+                    write("Der Gegenstand konnte nicht aufgenommen werden.\n");
+                }
             }
-        }
-        private void prepareTakeFrom(string command)
-        {
-            command = command.Remove(0, 8);
-            command = command.Trim();
-            write("Wähle nun den Gegenstand\n");
+            
 
 
         }
