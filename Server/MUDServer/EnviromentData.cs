@@ -177,15 +177,16 @@ namespace MUDServer
             }
             return character_list;
         }
-        public bool loadObject(string takeFrom,string objectName)
+        public string loadObject(string takeFrom,string objectName)
         {
+            string objectDescription = "";
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
             sql.query = "select Description from `Objekt`,`ObjInRoom`,`Takeable` where `Takeable`.O_Id=`Objekt`.O_Id and `Objekt`.O_Id=`ObjInRoom`.O_Id and R_Id=? and TakeFrom=? and Name=?";
             sql.add_parameter(R_Id);
             sql.add_parameter(takeFrom);
             sql.add_parameter(objectName);
             sql.execute_query();
-            return true;
+            return objectDescription;
         }
     
     }
