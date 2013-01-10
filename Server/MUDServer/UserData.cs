@@ -394,9 +394,10 @@ namespace MUDServer
             {
                 return -3;
             }
-            int category = Convert.ToInt32(exec.result[0][1]);
+            Console.WriteLine(exec.result[0][1].GetType());
+            string category = Convert.ToString(exec.result[0][1]);
             long I_Id = Convert.ToInt64(exec.result[0][0]);
-            if (category == 1)
+            if (category == "Armor")
             {
                 
                 if (!unequip_armor(I_Id))
@@ -404,7 +405,7 @@ namespace MUDServer
                     return -1;
                 }
             }
-            else if (category == 2)
+            else if (category == "Weapon")
             {
                 if (!unequip_weapon())
                 {
@@ -413,19 +414,25 @@ namespace MUDServer
             }
             else//it is nothing you can equip
             {
+                Console.WriteLine("Failed to equip object: " + category);
                 return -4;
             }
             UnreadableSQLExecuter u_exec = new UnreadableSQLExecuter();
             u_exec.query = "Update `BelongsTo` set Equipped =1 where C_Id=? and I_Id=?";
             u_exec.add_parameter(C_Id);
             u_exec.add_parameter(I_Id);
+            u_exec.execute_query();
+            if (u_exec.error)
+            {
+                Console.WriteLine(u_exec.error_string);
+            }
             return 0;
         }
         private bool unequip_armor(long I_Id) // it is assumed that the user ownes this item
         {
             // find out if an armor of this type is allready equipped
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-            exec.query = "update `BelongsTo`,`Armor` set `BelongsTo`.Equipped = 0 where `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id=? and `Armor`.Type in (select Type from Armor where I_Id=?)";
+            exec.query = "update `BelongsTo`,`Armor` set `BelongsTo`.Equipped = 0 where `BelongsTo`.I_Id = `Armor`.I_Id and `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id=? and `Armor`.Type in (select Type from Armor where I_Id=?)";
             exec.add_parameter(C_Id);
             exec.add_parameter(I_Id);
             exec.execute_query();
@@ -440,7 +447,7 @@ namespace MUDServer
         private bool unequip_weapon() // here as well
         {
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-            exec.query = "update `BelongsTo`,`Item` set `BelongsTo`.Equipped=0 where `Item`.Type=2 and `BelongsTo`.C_Id = ?";
+            exec.query = "update `BelongsTo`,`Item` set `BelongsTo`.Equipped=0 where `BelongsTo`.I_Id=`Item`.I_Id and `Item`.Category='Weapon' and `BelongsTo`.C_Id = ?";
             exec.add_parameter(C_Id);
             exec.execute_query();
             if (exec.error)
