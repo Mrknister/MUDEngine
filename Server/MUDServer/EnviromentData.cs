@@ -186,6 +186,12 @@ namespace MUDServer
             sql.add_parameter(takeFrom);
             sql.add_parameter(objectName);
             sql.execute_query();
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return objectDescription;
+            }
+            objectDescription = Convert.ToString(sql.result[0][0]);
             return objectDescription;
         }
     
