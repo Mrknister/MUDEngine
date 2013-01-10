@@ -108,11 +108,12 @@ namespace MUDServer
                 Console.WriteLine(sql.error_string);
                 return false;
             }
-            long I_Id = Convert.ToInt64(sql.result[0][0]);
             if (!sql.HasRows)
             {
                 return false;
             }
+            long I_Id = Convert.ToInt64(sql.result[0][0]);
+            sql = new ReadableSQLExecuter(); 
 
             sql.query = "select * from `BelongsTo` where I_Id=? and C_Id=?";
             sql.add_parameter(I_Id);
@@ -139,7 +140,7 @@ namespace MUDServer
             else
             {
                 UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-                exec.query = "insert into `BelongsTo` (I_Id,C_Id,Amount) values (?,?,1)";
+                exec.query = "insert into `BelongsTo` (I_Id,C_Id,Amount,Equipped) values (?,?,1,0)";
                 exec.add_parameter(I_Id);
                 exec.add_parameter(C_Id);
                 exec.execute_query();

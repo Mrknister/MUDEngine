@@ -176,6 +176,7 @@ namespace MUDServer
         {
             command = command.Remove(0, 4);
             command = command.Trim();
+            Console.WriteLine(command);
             if (_enviroment_data.takeFrom("", command))
             {
                 write("Der Gegenstand wurde aufgenommen.\n");
