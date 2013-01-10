@@ -43,6 +43,10 @@ namespace MUDServer
             {
                 goDown();
             }
+            else if (command.StartsWith("rueste "))
+            {
+                ausruesten(command);
+            }
         }
         private void inventar(string command)
         {
@@ -145,6 +149,20 @@ namespace MUDServer
             {
                 write("Du gehst runter\n");
             }
+        }
+        public void ausruesten(string command)
+        {
+            if(command.StartsWith("rueste "))
+            {
+                command=command.Remove(0,7);
+            }
+            if (command.EndsWith(" aus"))
+            {
+                command = command.Remove(command.Length - 4);
+
+            }
+            command = command.Trim();
+            _user_data.equip(command);
         }
     }
 }

@@ -249,6 +249,6 @@ namespace MUDServer
         {
             _command_interpreter.InterpretCommand(Message);
         }
-
     }
+
 }

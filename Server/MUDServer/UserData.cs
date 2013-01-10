@@ -369,5 +369,31 @@ namespace MUDServer
             }
             return true;
         }
+        public long equip(string to_equip)
+        {
+            Console.WriteLine("\""+to_equip+"\"");
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query = "select Item.I_Id,Item.Category,BelongsTo.Equipped from BelongsTo,Item where Item.I_Id=BelongsTo.I_Id and Item.Name=? and BelongsTo.C_Id=?";
+            exec.add_parameter(to_equip);
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return -1;
+            }
+            if (!exec.HasRows) // item not found/owned
+            {
+                return -2;
+            }
+            if (Convert.ToBoolean(exec.result[0][2]))//allready equipped
+            {
+                return -3;
+            }
+            int category = Convert.ToInt32(exec.result[0][1]);
+
+            return 0;
+        }
+
     }
 }
