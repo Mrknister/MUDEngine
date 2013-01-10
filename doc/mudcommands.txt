@@ -36,6 +36,16 @@ select * from `BelongsTo` where I_Id=? and C_Id=?
 update `BelongsTo` set Amount=Amount+1 where I_Id=? and C_Id=?
 (nicht in besitz)
 insert into `BelongsTo` (I_Id,C_Id,Amount) values (?,?,1)
+
+betrachte
+(charaktere in Raum)
+select Name from `Character` where R_Id=? and not C_Id=?
+(monster in raum)
+select Name from `Monster`,`MonsterIsIn` where `Monster`.M_Id=`MonsterIsIn`.M_Id and R_Id=?
+(objekte in raum)
+select Name from `Object`,`ObjectInRoom` where `Object`.O_Id=`ObjectInRoom`.O_Id and R_Id=?
+
+
  
 
 

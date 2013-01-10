@@ -9,8 +9,8 @@ namespace MUDServer
     {
         long R_Id;
         long C_Id;
-        string R_Name;
-        string R_Discription;
+        public string R_Name;
+        public string R_Discription;
         public EnviromentData(long C_Id)
         {
             this.C_Id = C_Id;
