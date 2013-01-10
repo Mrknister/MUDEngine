@@ -17,8 +17,10 @@ namespace MUDServer
             {
                 inventar(command);
             }
-            else if (command.StartsWith("a ")) 
+            else if (command.StartsWith("a "))
+            {
                 angriff(command);
+            }
             else if (command == "n")
             {
                 goNorth();
@@ -43,21 +45,29 @@ namespace MUDServer
             {
                 goDown();
             }
-            else if (command.StartsWith("rueste "))
+            else if (command.ToLower().StartsWith("rueste "))
             {
                 ausruesten(command);
             }
             else if (command.StartsWith("nimm "))
             {
-                
-                
-                    nimm(command);
-                
-                
+                nimm(command);
+            }
+            else if (command == "b")
+            {
+                betrachte();
+            }
+            else if (command.StartsWith("b "))
+            {
+                betrachte_objekt(command);
+            }
+            else if (command.ToLower() == "hilfe")
+            {
+                hilfe();
             }
             else
             {
-                write("Ich habe dich nicht verstanden.");
+                write("Ich habe dich nicht verstanden.\n");
             }
         }
         private void inventar(string command)
@@ -164,9 +174,9 @@ namespace MUDServer
         }
         public void ausruesten(string command)
         {
-            if(command.StartsWith("rueste "))
+            if (command.StartsWith("rueste "))
             {
-                command=command.Remove(0,7);
+                command = command.Remove(0, 7);
             }
             if (command.EndsWith(" aus"))
             {
@@ -174,13 +184,29 @@ namespace MUDServer
 
             }
             command = command.Trim();
-            _user_data.equip(command);
+            int status = _user_data.equip(command);
+            if (status == -1)
+            {
+                write("Das geht jetzt leider nicht\n");
+            }
+            else if (status == -2)
+            {
+                write("Ich konnte diesen Gegenstand leider nicht finden.\n");
+            }
+            else if (status == -3)
+            {
+                write("Du hast diesen gegenstand bereits ausgeruestet.\n");
+            }
+            else
+            {
+                write("Du benutzt diesen gegenstand bereits.");
+            }
         }
-        
+
         private void nimm(string command)
         {
             string object_name, from_name;
-            
+
             if (command.Contains(" aus "))
             {
                 if (command.StartsWith("nimm ")) // in case some idiot removed the nehme somewhere before
@@ -192,10 +218,10 @@ namespace MUDServer
                 object_name = command.Remove(command.IndexOf(" aus "));
                 object_name = object_name.Trim();
 
-                from_name = command.Remove(0, command.IndexOf(" aus ")+6); // plus 6 because index of returns index and no the number of characters
+                from_name = command.Remove(0, command.IndexOf(" aus ") + 6); // plus 6 because index of returns index and no the number of characters
                 from_name = from_name.Trim();
 
-                Console.WriteLine(object_name+"|"+from_name);
+                Console.WriteLine(object_name + "|" + from_name);
 
                 if (_enviroment_data.takeFrom(from_name, object_name))
                 {
@@ -223,21 +249,27 @@ namespace MUDServer
                     write("Der Gegenstand konnte nicht aufgenommen werden.\n");
                 }
             }
-            
-
-
         }
-        private void executeTakeFrom(string command)
+
+        private void betrachte()
         {
-            string command2 = command.Trim();
-            if (_enviroment_data.takeFrom(command2, command))
+            write(_enviroment_data.R_Name + "\n\n");
+            write(_enviroment_data.R_Discription + "\n\nMonster:\n");
+            foreach (string monstername in _enviroment_data.loadMonster())
             {
-                write("Der Gegenstand wurde aufgenommen.\n");
+                write(monstername + "\n");
             }
-            else
+        }
+        private void betrachte_objekt(string command)
+        {
+            if (command.StartsWith("b "))
             {
-                write("Der Gegenstand konnte nicht aufgenommen werden.\n");
+                command = command.Remove(0, 2);
             }
+        }
+        private void hilfe()
+        {
+            write("Du kannst verschiedene Befehle ausfuehren:\n n = gehe nach norden ... ");
         }
     }
 }

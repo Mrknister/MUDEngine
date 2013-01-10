@@ -373,7 +373,7 @@ namespace MUDServer
             }
             return true;
         }
-        public long equip(string to_equip)
+        public int equip(string to_equip)
         {
             Console.WriteLine("\"" + to_equip + "\"");
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
@@ -425,6 +425,7 @@ namespace MUDServer
             if (u_exec.error)
             {
                 Console.WriteLine(u_exec.error_string);
+                return -1;
             }
             return 0;
         }
