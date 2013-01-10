@@ -43,8 +43,7 @@ select Name from `Character` where R_Id=? and not C_Id=?
 (monster in raum)
 select Name from `Monster`,`MonsterIsIn` where `Monster`.M_Id=`MonsterIsIn`.M_Id and R_Id=?
 (objekte in raum)
-select Name from `Object`,`ObjectInRoom` where `Object`.O_Id=`ObjectInRoom`.O_Id and R_Id=?
-
+select Description from `Objekt`,`ObjInRoom`,`Takeable` where `Takeable`.O_Id=`Objekt`.O_Id and `Objekt`.O_Id=`ObjInRoom`.O_Id and R_Id=? and TakeFrom=? and Name=?
 
  
 

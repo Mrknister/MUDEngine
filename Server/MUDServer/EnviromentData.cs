@@ -155,5 +155,38 @@ namespace MUDServer
             exec2.execute_query();
             return true;
         }
+        public List<string> loadCharacter()
+        {
+            List<string> character_list = new List<string>();
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select Name from `Character` where R_Id=? and not C_Id=?";
+            sql.add_parameter(R_Id);
+            sql.add_parameter(C_Id);
+            sql.execute_query();
+
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return character_list;
+            }
+            foreach (object[] tmp in sql.result)
+            {
+                string c_name = "";
+                c_name +=Convert.ToString(tmp[1]);
+                character_list.Add(c_name);
+            }
+            return character_list;
+        }
+        public bool loadObject(string takeFrom,string objectName)
+        {
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select Description from `Objekt`,`ObjInRoom`,`Takeable` where `Takeable`.O_Id=`Objekt`.O_Id and `Objekt`.O_Id=`ObjInRoom`.O_Id and R_Id=? and TakeFrom=? and Name=?";
+            sql.add_parameter(R_Id);
+            sql.add_parameter(takeFrom);
+            sql.add_parameter(objectName);
+            sql.execute_query();
+            return true;
+        }
+    
     }
 }
