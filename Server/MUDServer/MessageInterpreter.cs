@@ -224,7 +224,6 @@ namespace MUDServer
             {
 
                 string user_character = Message.Trim();
-                _user_data.createCharacter(user_character);
                 if (_user_data.createCharacter(user_character))
                 {
                     write("Charakter wurde Erfolgreich erstellt!\n");

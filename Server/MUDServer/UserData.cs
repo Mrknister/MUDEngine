@@ -298,8 +298,12 @@ namespace MUDServer
             sql.query = "select C_Id from `Character` where Name=?";
             sql.add_parameter(name);
             sql.execute_query();
-
-            if (!sql.HasRows)
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return false;
+            }
+            if (sql.HasRows)
             {
                 return false;
             }

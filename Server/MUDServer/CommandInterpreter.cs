@@ -47,13 +47,21 @@ namespace MUDServer
             {
                 ausruesten(command);
             }
+            else if (command.StartsWith("nimm "))
+            {
+                take(command);
+            }
+            else if (command.StartsWith("nimm_aus"))
+            {
+                prepareTakeFrom(command);
+            }
         }
         private void inventar(string command)
         {
             List<string> items = _user_data.loadItems();
             if (items.Count == 0)
             {
-                write("Du besitzt momentan nichts");
+                write("Du besitzt momentan nichts\n");
             }
             foreach (string item in items)
             {
@@ -71,14 +79,14 @@ namespace MUDServer
             long monster_lost = _user_data.attackMonster(command);
             if (_user_data.Health <= 0)
             {
-                write("Du bist tod!");
+                write("Du bist tod!\n");
             }
             if (monster_lost == -1)
             {
-                write("Ich kann das Monster "+command+" nicht finden.");
+                write("Ich kann das Monster " + command + " nicht finden.\n");
             }
             else if (monster_lost == 0)
-                write("Du hast das Monster bezwungen.");
+                write("Du hast das Monster bezwungen.\n");
             else
                 write("Das Monster hat noch " + Convert.ToString(monster_lost) + " Lebenspunkte\n");
         }
@@ -163,6 +171,39 @@ namespace MUDServer
             }
             command = command.Trim();
             _user_data.equip(command);
+        }
+        private void take(string command) 
+        {
+            command = command.Remove(0, 4);
+            command = command.Trim();
+            if (_enviroment_data.takeFrom("", command))
+            {
+                write("Der Gegenstand wurde aufgenommen.\n");
+            }
+            else
+            {
+                write("Der Gegenstand konnte nicht aufgenommen werden.\n");
+            }
+        }
+        private void prepareTakeFrom(string command)
+        {
+            command = command.Remove(0, 8);
+            command = command.Trim();
+            write("Wähle nun den Gegenstand\n");
+
+
+        }
+        private void executeTakeFrom(string command)
+        {
+            string command2 = command.Trim();
+            if (_enviroment_data.takeFrom(command2, command))
+            {
+                write("Der Gegenstand wurde aufgenommen.\n");
+            }
+            else
+            {
+                write("Der Gegenstand konnte nicht aufgenommen werden.\n");
+            }
         }
     }
 }

@@ -95,5 +95,64 @@ namespace MUDServer
             }
             return true;
         }
+        public bool takeFrom(string TakeFrom,string ObjectName)
+        {
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select I_Id from `Takeable`,`Objekt`,`ObjInRoom` where `Takeable`.O_Id=`Objekt`.O_Id and `Objekt`.O_Id=`ObjInRoom`.O_Id and `Takeable`.TakeFrom=? and `Objekt`.Name=? and `ObjInRoom`.R_Id=?";
+            sql.add_parameter(TakeFrom);
+            sql.add_parameter(ObjectName);
+            sql.add_parameter(R_Id);
+            sql.execute_query();
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return false;
+            }
+            long I_Id = Convert.ToInt64(sql.result[0][0]);
+            if (!sql.HasRows)
+            {
+                return false;
+            }
+
+            sql.query = "select * from `BelongsTo` where I_Id=? and C_Id=?";
+            sql.add_parameter(I_Id);
+            sql.add_parameter(C_Id);
+            sql.execute_query();
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return false;
+            }
+            if (sql.HasRows)
+            {
+                UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+                exec.query = "update `BelongsTo` set Amount=Amount+1 where I_Id=? and C_Id=?";
+                exec.add_parameter(I_Id);
+                exec.add_parameter(C_Id);
+                exec.execute_query();
+                if (exec.error)
+                {
+                    Console.WriteLine(sql.error_string);
+                    return false;
+                }
+            }
+            else
+            {
+                UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+                exec.query = "insert into `BelongsTo` (I_Id,C_Id,Amount) values (?,?,1)";
+                exec.add_parameter(I_Id);
+                exec.add_parameter(C_Id);
+                exec.execute_query();
+                if (exec.error)
+                {
+                    Console.WriteLine(sql.error_string);
+                    return false;
+                }
+            }
+            UnreadableSQLExecuter exec2 = new UnreadableSQLExecuter();
+            exec2.query = "update `Takeable` set RespawnAtTime=RespawnAtTime+RespawnTime";
+            exec2.execute_query();
+            return true;
+        }
     }
 }
