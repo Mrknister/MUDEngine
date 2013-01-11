@@ -1,9 +1,6 @@
 UML-updates
 
-_____________________
 
-zerstoere ...
-zeuch aus der tabelle BelongsTo löschen. ( nicht where vergessen )
 
 _____________________
 
@@ -20,3 +17,8 @@ equipped auf false setzen
 Nice to have:
 
 Change the table that takefrom points to an object id.
+
+_____________________
+
+zerstoere ...
+zeuch aus der tabelle BelongsTo löschen. ( nicht where vergessen )

@@ -471,6 +471,33 @@ namespace MUDServer
             }
             return true;
         }
+        public int consume(string item_name,bool consumation_type)
+        {
+            ReadableSQLExecuter exec = new ReadableSQLExecuter(); 
+            exec.query = "select `Item`.I_Id,`Item`.Category,`BelongsTo`.Amount from `Item`,`BelongsTo` where `BelongsTo`.I_Id=`Item`.I_Id and `BelongsTo`.C_Id=? and `Item`.Name=?";
+            exec.add_parameter(C_Id);
+            exec.add_parameter(item_name);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return -1;
+            }
+            if (!exec.HasRows)
+            {
+                return 1;
+            }
+            long I_Id = Convert.ToInt64(exec.result[0][0]);
+            string category = Convert.ToString(exec.result[0][1]);
+
+            if (category != "Consumable")
+            {
+                return 2;
+            }
+            exec = new ReadableSQLExecuter();
+            exec.query = "select ";
+            return 0;
+        }
 
     }
 }

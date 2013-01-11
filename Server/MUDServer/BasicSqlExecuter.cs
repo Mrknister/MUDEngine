@@ -35,6 +35,14 @@ namespace MUDServer
 
             _parameters.Add(param);
         }
+        public void add_parameter(bool value)
+        {
+            OdbcParameter param = new OdbcParameter();
+            param.DbType = DbType.Boolean;
+            param.Value = value;
+
+            _parameters.Add(param);
+        }
         public void add_parameter(OdbcParameter param)
         {
             _parameters.Add(param);

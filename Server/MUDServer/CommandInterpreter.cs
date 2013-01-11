@@ -24,30 +24,39 @@ namespace MUDServer
             else if (command == "n")
             {
                 goNorth();
+                betrachte();
             }
             else if (command == "s")
             {
                 goSouth();
+                betrachte();
             }
             else if (command == "w")
             {
                 goWest();
+                betrachte();
             }
             else if (command == "o")
             {
                 goEast();
+                betrachte();
             }
             else if (command == "h")
             {
                 goUp();
+                betrachte();
             }
             else if (command == "r")
             {
                 goDown();
+                betrachte();
             }
             else if (command.ToLower().StartsWith("rueste "))
             {
                 ausruesten(command);
+            }
+            else if (command.ToLower().StartsWith("trinke "))
+            {
             }
             else if (command.StartsWith("nimm "))
             {
@@ -116,7 +125,6 @@ namespace MUDServer
             {
                 write("Du gehst nach Norden\n");
             }
-
         }
         private void goSouth()
         {
@@ -203,7 +211,9 @@ namespace MUDServer
                 write("Du benutzt diesen gegenstand bereits.");
             }
         }
-
+        private void trinken(string command)
+        {
+        }
         private void nimm(string command)
         {
             string object_name, from_name;
@@ -222,7 +232,7 @@ namespace MUDServer
                 from_name = command.Remove(0, command.IndexOf(" aus ") + 6); // plus 6 because index of returns index and no the number of characters
                 from_name = from_name.Trim();
 
-                Console.WriteLine(object_name + "|" + from_name);
+                //Console.WriteLine(object_name + "|" + from_name); //debugging
 
                 if (_enviroment_data.takeFrom(from_name, object_name))
                 {
