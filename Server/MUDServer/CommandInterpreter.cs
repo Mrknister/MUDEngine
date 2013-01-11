@@ -79,6 +79,10 @@ namespace MUDServer
             {
                 hilfe();
             }
+            else if (command.ToLower() == "stats")
+            {
+                zeigeWerte();
+            }
             else
             {
                 write("Ich habe dich nicht verstanden.\n");
@@ -246,6 +250,21 @@ namespace MUDServer
                 write("Es sit nicht dein Fehler. Es ist meiner. Ich schäme mich :( .");
             }
         }
+        private void zeigeWerte()
+        {
+            _user_data.loadAttributes();
+            _user_data.calculateBuffs();
+            _user_data.calculateItemStats();
+
+            write("Euer Name ist: " + _user_data.Name + 
+                "\n" + "Euere maximale Lebensenergie ist: " + Convert.ToString(_user_data.MaxHealth) + 
+                "\n" + "Euere momentane Lebensenergie ist: " + Convert.ToString(_user_data.Health)+
+                "\n" + "Euer momentaner Schaden ist: " + Convert.ToString(_user_data.Damage + _user_data.ItemDamage + _user_data.BuffDamage)+
+                "\n" + "Euer momentaner Wiederstand ist: "+Convert.ToString(_user_data.PhRes + _user_data.BuffPhRes + _user_data.ItemPhRes)+
+                "\n");
+
+           
+        }
         private void essen(string command)
         {
             if (command.StartsWith("esse "))
@@ -273,7 +292,7 @@ namespace MUDServer
             }
             else
             {
-                write("Es sit nicht dein Fehler. Es ist meiner. Ich schäme mich :( .");
+                write("Es ist nicht dein Fehler. Es ist meiner. Ich schäme mich :( .");
             }
 
         }
