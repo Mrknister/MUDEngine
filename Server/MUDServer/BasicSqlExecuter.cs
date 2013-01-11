@@ -10,7 +10,7 @@ namespace MUDServer
 {
     public abstract class BasicSQLExecuter
     {
-        public static Config conf;
+        static Config conf;
 
         public bool error = false;
         public string error_string = "";
@@ -21,6 +21,10 @@ namespace MUDServer
         static BasicSQLExecuter()
         {
             conf = new Config();
+            if (!conf.ReadFile(@"..\..\..\..\doc\config.txt"))
+            {
+                Console.WriteLine("Failed to read the Config file.");
+            }
         }
 
         public void add_parameter(long value)
@@ -55,7 +59,12 @@ namespace MUDServer
 
         protected virtual OdbcConnection get_connection()
         {
-            OdbcConnection conn = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=mrknister.justdied.com; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;");
+            string connection_string="DRIVER={MySQL ODBC 5.2w Driver}; DATABASE=MUDEngine;";
+            
+            connection_string += "SERVER=" + conf.DatabaseHost+"; UID="+conf.DatabaseUser+"; PWD="+conf.DatabasePassword+";";
+            Console.WriteLine(connection_string);
+            OdbcConnection conn = new OdbcConnection(connection_string);
+
             
             return conn;
         }

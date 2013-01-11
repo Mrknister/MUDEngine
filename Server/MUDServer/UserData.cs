@@ -16,7 +16,9 @@ namespace MUDServer
         public long C_Id = 0;
         public long R_Id;
         public string Name;
-        public long Money, Health, Mana, Damage, PhRes, MaRes, MaxHealth, MaxMana;
+        public long Money, Health,  Damage, PhRes,  MaxHealth;
+        public long BuffDamage, BuffPhRes;
+        public long ItemDamage, ItemPhRes;
 
         public UserData()
         {
@@ -28,7 +30,7 @@ namespace MUDServer
                 return false;
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
-            exec.query = "select Money,Health,Mana,Damage,PhRes,MaRes,R_Id,MaxHealth,MaxMana from `Character` where C_Id = ?";
+            exec.query = "select Money,Health,Damage,PhRes,R_Id,MaxHealth from `Character` where C_Id = ?";
             exec.add_parameter(C_Id);
             exec.execute_query();
             if (exec.error)
@@ -43,26 +45,123 @@ namespace MUDServer
             object[] attributes = exec.result[0];
             Money = Convert.ToInt64(attributes[0]);
             Health = Convert.ToInt64(attributes[1]);
-            Mana = Convert.ToInt64(attributes[2]);
-            Damage = Convert.ToInt64(attributes[3]);
-            PhRes = Convert.ToInt64(attributes[4]);
-            MaRes = Convert.ToInt64(attributes[5]);
-            R_Id = Convert.ToInt64(attributes[6]);
-            MaxHealth = Convert.ToInt64(attributes[7]);
-            MaxMana = Convert.ToInt64(attributes[8]);
+            Damage = Convert.ToInt64(attributes[2]);
+            PhRes = Convert.ToInt64(attributes[3]);
+            R_Id = Convert.ToInt64(attributes[4]);
+            MaxHealth = Convert.ToInt64(attributes[5]);
+            return true;
+        }
+        public bool calculateBuffs()
+        {
+            //load buff damage
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.add_parameter(C_Id);
+            exec.query = "select sum(Amount) from `Buff` where  Type=1 and RunsOutAt > now() and C_Id = ?";
+            exec.execute_query();
+            if (exec.error) // an error occured somewhere during the loading of the player attributes
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            if (exec.HasRows)
+            {
+                if (exec.result[0][0] != DBNull.Value)
+                {
+                    BuffDamage = Convert.ToInt64(exec.result[0][0]);
+                }
+                else
+                {
+                    BuffDamage = 0;
+                }
+            }
+            //load buff res
+            exec = new ReadableSQLExecuter();
+            exec.add_parameter(C_Id);
+            exec.query = "select sum(Amount) from `Buff` where  Type=2 and RunsOutAt > now() and C_Id = ? ";
+            exec.execute_query();
+            if (exec.error) // an error occured somewhere during the loading of the player attributes
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            if (exec.HasRows)
+            {
+                if (exec.result[0][0] != DBNull.Value)
+                {
+                    BuffPhRes = Convert.ToInt64(exec.result[0][0]);
+                }
+                else
+                {
+                    BuffPhRes = 0;
+                }
+            }
+            return true;
+        }
+        public bool calculateItemStats()
+        {
+            // load weapon damage
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.add_parameter(C_Id);
+            exec.query = "select sum(`Weapon`.Damage)  from `Weapon`,`BelongsTo` where `Weapon`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id = ?";
+            exec.execute_query();
+            if (exec.error) // an error occured somewhere during the loading of the player attributes
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            if (exec.HasRows)
+            {
+                if (exec.result[0][0] != DBNull.Value)
+                {
+                    ItemDamage = Convert.ToInt64(exec.result[0][0]);
+                }
+                else
+                {
+                    ItemDamage = 0;
+                }
+            }
+            else
+            {
+                ItemDamage = 0;
+            }
+
+
+            // load armor res
+            exec = new ReadableSQLExecuter();
+            exec.add_parameter(C_Id);
+            exec.query = "select sum(`Armor`.PhyRes)  from `Armor`,`BelongsTo` where `Armor`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id = ?";
+            exec.execute_query();
+            if (exec.error) // an error occured somewhere during the loading of the player attributes
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            if (exec.HasRows)
+            {
+                if (exec.result[0][0] != DBNull.Value)
+                {
+                    ItemPhRes = Convert.ToInt64(exec.result[0][0]);
+                }
+                else
+                {
+                    ItemPhRes = 0;
+                }
+            }
+            else
+            {
+                ItemDamage = 0;
+            }
             return true;
         }
         public bool saveAttributes()
         {
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-            exec.query = "update `Character` set Name=?,Money=?,Health=?,Mana=?,Damage=?,PhRes=?,MaRes=?,R_Id=? where C_Id =?";
+            exec.query = "update `Character` set Name=?,Money=?,Health=?,Damage=?,PhRes=?,R_Id=? where C_Id=?";
             exec.add_parameter(Name);
             exec.add_parameter(Money);
             exec.add_parameter(Health);
-            exec.add_parameter(Mana);
             exec.add_parameter(Damage);
             exec.add_parameter(PhRes);
-            exec.add_parameter(MaRes);
             exec.add_parameter(R_Id);
             exec.add_parameter(C_Id);
             exec.execute_query();
@@ -77,6 +176,8 @@ namespace MUDServer
         public long attackMonster(string monstername)
         {
             loadAttributes();
+            calculateBuffs();
+            calculateItemStats();
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
             // load monster attributes
@@ -102,72 +203,8 @@ namespace MUDServer
 
             //load and calculate player attributes
 
-            long damage = this.Damage;
-            long phres = this.PhRes;
-
-            // load weapon damage
-            exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id);
-            exec.query = "select sum(`Weapon`.Damage)  from `Weapon`,`BelongsTo` where `Weapon`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id = ?";
-            exec.execute_query();
-            if (exec.error) // an error occured somewhere during the loading of the player attributes
-            {
-                Console.WriteLine(exec.error_string);
-                return -1;
-            }
-            if (exec.HasRows)
-            {
-                if (exec.result[0][0] != DBNull.Value)
-                    damage += Convert.ToInt64(exec.result[0][0]);
-            }
-
-            //load buff damage
-            exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id);
-            exec.query = "select sum(Amount) from `Buff` where  Type=1 and RunsOutAt > now() and C_Id = ?";
-            exec.execute_query();
-            if (exec.error) // an error occured somewhere during the loading of the player attributes
-            {
-                Console.WriteLine(exec.error_string);
-                return -1;
-            }
-            if (exec.HasRows)
-            {
-                if (exec.result[0][0] != DBNull.Value)
-                    damage += Convert.ToInt64(exec.result[0][0]);
-            }
-
-            // load armor res
-            exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id);
-            exec.query = "select sum(`Armor`.PhyRes)  from `Armor`,`BelongsTo` where `Armor`.I_Id=`BelongsTo`.I_Id and `BelongsTo`.Equipped=1 and `BelongsTo`.C_Id = ?";
-            exec.execute_query();
-            if (exec.error) // an error occured somewhere during the loading of the player attributes
-            {
-                Console.WriteLine(exec.error_string);
-                return -1;
-            }
-            if (exec.HasRows)
-            {
-                if (exec.result[0][0] != DBNull.Value)
-                    phres += Convert.ToInt64(exec.result[0][0]);
-            }
-
-            //load buff res
-            exec = new ReadableSQLExecuter();
-            exec.add_parameter(C_Id);
-            exec.query = "select sum(Amount) from `Buff` where  Type=2 and RunsOutAt > now() and C_Id = ? ";
-            exec.execute_query();
-            if (exec.error) // an error occured somewhere during the loading of the player attributes
-            {
-                Console.WriteLine(exec.error_string);
-                return -1;
-            }
-            if (exec.HasRows)
-            {
-                if (exec.result[0][0] != DBNull.Value)
-                    phres += Convert.ToInt64(exec.result[0][0]);
-            }
+            long damage = this.Damage+this.ItemDamage+this.BuffDamage;
+            long phres = this.PhRes + this.ItemPhRes + this.BuffPhRes;
 
             long m_caused_dmg = M_Damage - phres;
             long p_caused_dmg = damage;
@@ -279,19 +316,13 @@ namespace MUDServer
 
             if (!sql.HasRows)
             {
-                Console.WriteLine("Empty Set");
                 return false;
             }
             U_Id = Convert.ToInt64(sql.result[0][0]);
 
             return true;
         }
-        public List<string> getCharacters()
-        {
-            List<string> to_return = new List<string>();
-
-            return to_return;
-        }
+        
         public bool createCharacter(string name)
         {
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
@@ -557,7 +588,7 @@ namespace MUDServer
         }
         private bool usePoison(long amount, long I_Id, DateTime duration)
         {
-
+            return true;
         }
     }
 }

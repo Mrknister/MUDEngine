@@ -1,4 +1,4 @@
-databaseuser = blubblub
-databasepassword = blabla
-databasehost =    jan.justdied.de
+databaseuser = mudengineer
+databasepassword = hAWFYe2YsNHXZrtF
+databasehost =    mrknister.justdied.com
 #das ist ein zu ignorierender kommentar

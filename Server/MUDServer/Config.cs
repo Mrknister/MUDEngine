@@ -8,13 +8,13 @@ namespace MUDServer
 {
     class Config
     {
-        public string DatabaseHost = "";
-        public string DatabaseUser = "";
-        public string DatabasePassword = "";
+        public string DatabaseHost = "mrknister.justdied.com";
+        public string DatabaseUser = "mudengineer";
+        public string DatabasePassword = "hAWFYe2YsNHXZrtF";
 
         public bool ReadFile(String ConfigFile)
         {
-            if (File.Exists(ConfigFile))
+            if (!File.Exists(ConfigFile))
             {
                 return false;
             }
@@ -49,6 +49,7 @@ namespace MUDServer
 
             Found = line.IndexOf("=");
             value = value.Remove(0, Found + 1);
+            Console.WriteLine(value);
 
             return value;
 

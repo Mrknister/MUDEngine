@@ -4,11 +4,6 @@ UML-updates
 
 _____________________
 
-ausruesten ...
-denkt euch einen kreativeren namen aus und programmiert es
-ihr müsst auch checken, ob er bereits eine Waffe ausgerüstet hat bzw. Einen Armor diese typs an hat und falls ja den erst raus nehmen.
-
-_____________________
 
 ablegen ...
 equipped auf false setzen
