@@ -549,7 +549,7 @@ namespace MUDServer
 
             return 0;
         }
-        private bool consumeHealth(long amount, long I_Id)
+        private bool consumeHealth(long amount)
         {
             ReadableSQLExecuter exec =new ReadableSQLExecuter();
             exec.query = "update `Character` set Health = case when Health+=? <MaxHealth then Health+? else MaxHealth where `Character`.C_Id=? ";
@@ -568,8 +568,40 @@ namespace MUDServer
             }
         }
 
-        private bool consumeArmor(long amount, long I_Id, DateTime duration)
+        private bool consumeArmor(long amount, long I_Id)
         {
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query = "select Name from `Item` where I_Id=?";
+            exec.add_parameter(I_Id);
+            exec.execute_query();
+            string Name = Convert.ToString(exec.result[0][1]);
+
+            exec = new ReadableSQLExecuter();
+            exec.query = "select now()+Duration from `Consumable` where I_Id=?";
+            exec.add_parameter(I_Id);
+            exec.execute_query();
+            DateTime Buffduration = Convert.ToDateTime(exec.result[0][1]); 
+
+             exec = new ReadableSQLExecuter();
+            exec.query = "insert into `Buff`(Name, Amount, Type, RunsOutAt, C_Id) values(?,?,2,?,?) ";
+            exec.add_parameter(Name);
+            exec.add_parameter(amount);
+            exec.add_parameter(Convert.ToString(Buffduration));
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool usePoison(long amount, DateTime duration)
+        {
+
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
             exec.query = "update `Character` set Health = case when Health+=? <MaxHealth then Health+? else MaxHealth where `Character`.C_Id=? ";
             exec.add_parameter(amount);
@@ -585,10 +617,6 @@ namespace MUDServer
             {
                 return true;
             }
-        }
-        private bool usePoison(long amount, long I_Id, DateTime duration)
-        {
-            return true;
         }
     }
 }
