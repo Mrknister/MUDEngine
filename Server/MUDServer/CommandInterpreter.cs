@@ -94,6 +94,7 @@ namespace MUDServer
             if (_user_data.Health <= 0)
             {
                 write("Du bist tod!\n");
+                _user_data.died();
             }
             if (monster_lost == -1)
             {
@@ -254,17 +255,42 @@ namespace MUDServer
         private void betrachte()
         {
             write(_enviroment_data.R_Name + "\n\n");
-            write(_enviroment_data.R_Discription + "\n\nMonster:\n");
-            foreach (string monstername in _enviroment_data.loadMonster())
+            
+            List<string> monsters = _enviroment_data.loadMonster();
+            if (monsters.Count != 0)
             {
-                write(monstername + "\n");
+                write(_enviroment_data.R_Discription + "\n\nMonster:\n");
+                foreach (string monstername in monsters)
+                {
+                    write(monstername + "\n");
+                }
             }
         }
         private void betrachte_objekt(string command)
         {
+            string object_description;
             if (command.StartsWith("b "))
             {
                 command = command.Remove(0, 2);
+            }
+            if (command.Contains(" in "))
+            {
+                string object_to_inspect, object_in;
+                object_to_inspect = command.Remove(command.IndexOf(" in "));
+                object_in = command.Remove(0, command.IndexOf(" in ") + 5);
+                object_description = _enviroment_data.loadObject(object_in, object_to_inspect);
+            }
+            else
+            {
+                object_description = _enviroment_data.loadObject(command);
+            }
+            if (object_description != "")
+            {
+                write(object_description+"\n");
+            }
+            else
+            {
+                write("Ich konnte das Objeckt nicht finden\n");
             }
         }
         private void hilfe()

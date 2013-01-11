@@ -308,7 +308,7 @@ namespace MUDServer
                 return false;
             }
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-            exec.query = "insert into `Character` (U_Id,Name,Money,Health,Mana,Damage,PhRes,MaRes,MaxHealth,MaxMana,R_Id) values (?,?,200,100,100,10,10,10,100,100,1)";
+            exec.query = "insert into `Character` (U_Id,Name,Money,Health,Damage,PhRes,MaxHealth,R_Id) values (?,?,200,100,30,10,100,1)";
 
             exec.add_parameter(U_Id);
             exec.add_parameter(name);
@@ -458,7 +458,19 @@ namespace MUDServer
             }
             return true;
         }
-
+        public bool died()
+        {
+            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+            exec.query = "update `Character` set Health=MaxHealth, R_Id=1 where C_Id=?";
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            return true;
+        }
 
     }
 }

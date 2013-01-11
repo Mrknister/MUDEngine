@@ -10,7 +10,7 @@ namespace MUDServer
         long R_Id;
         long C_Id;
         public string R_Name;
-        public string R_Discription;
+        public string R_Discription ;
         public EnviromentData(long C_Id)
         {
             this.C_Id = C_Id;
@@ -51,11 +51,14 @@ namespace MUDServer
                 Console.WriteLine(sql.error_string);
                 return monster_list;
             }
-            foreach (object[] tmp in sql.result)
+            if (sql.HasRows)
             {
-                string m_name = "";
-                m_name += Convert.ToString(tmp[1]);
-                monster_list.Add(m_name);
+                foreach (object[] tmp in sql.result)
+                {
+                    string m_name = "";
+                    m_name += Convert.ToString(tmp[0]);
+                    monster_list.Add(m_name);
+                }
             }
             return monster_list;
         }
@@ -88,8 +91,7 @@ namespace MUDServer
                 Console.WriteLine(sql.error_string);
                 return false;
             }
-            loadRoom();
-            if (loadRoom() == false)
+            if (!loadRoom())
             {
                 return false;
             }
@@ -181,7 +183,7 @@ namespace MUDServer
         {
             string objectDescription = "";
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
-            sql.query = "select Description from `Objekt`,`ObjInRoom`,`Takeable` where `Takeable`.O_Id=`Objekt`.O_Id and `Objekt`.O_Id=`ObjInRoom`.O_Id and R_Id=? and TakeFrom=? and Name=?";
+            sql.query = "select `Objekt`.Description from `Objekt`,`ObjInRoom`,`Takeable` where `Takeable`.O_Id=`Objekt`.O_Id and `Objekt`.O_Id=`ObjInRoom`.O_Id and `ObjInRoom`.R_Id=? and `Takeable`.TakeFrom=? and `Objekt`Name=?";
             sql.add_parameter(R_Id);
             sql.add_parameter(takeFrom);
             sql.add_parameter(objectName);
@@ -191,9 +193,31 @@ namespace MUDServer
                 Console.WriteLine(sql.error_string);
                 return objectDescription;
             }
-            objectDescription = Convert.ToString(sql.result[0][0]);
+            if (sql.HasRows)
+            {
+                objectDescription = Convert.ToString(sql.result[0][0]);
+            }
             return objectDescription;
         }
-    
+        public string loadObject(string objectName)
+        {
+            string objectDescription = "";
+            ReadableSQLExecuter sql = new ReadableSQLExecuter();
+            sql.query = "select `Objekt`.Description from `Objekt`,`ObjInRoom` where and `Objekt`.O_Id=`ObjInRoom`.O_Id and `ObjInRoom`.R_Id=? and `Objekt`.O_Id ´ in (select O_Id from `Takeable` where TakeFrom = '' and R_Id=? ) and `Objekt`.Name=?";
+            sql.add_parameter(R_Id);
+            sql.add_parameter(R_Id); // again for the nested join
+            sql.add_parameter(objectName);
+            sql.execute_query();
+            if (sql.error)
+            {
+                Console.WriteLine(sql.error_string);
+                return objectDescription;
+            }
+            if (sql.HasRows)
+            {
+                objectDescription = Convert.ToString(sql.result[0][0]);
+            }
+            return objectDescription;
+        }
     }
 }
