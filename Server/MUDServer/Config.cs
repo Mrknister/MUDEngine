@@ -8,7 +8,9 @@ namespace MUDServer
 {
     class Config
     {
-        public string FileLine, DatabaseHost, DatabaseUser, DatabasePassword;
+        public string DatabaseHost = "";
+        public string DatabaseUser = "";
+        public string DatabasePassword = "";
 
         public bool ReadFile(String ConfigFile)
         {
@@ -19,6 +21,7 @@ namespace MUDServer
             StreamReader ConfigFiles = new StreamReader(ConfigFile);
             while (!ConfigFiles.EndOfStream)                            // While Loop for setting global variables
             {
+                string FileLine;
                 FileLine = ConfigFiles.ReadLine();
                 FileLine = FileLine.Replace(" ", "");
 

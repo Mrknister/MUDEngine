@@ -495,7 +495,27 @@ namespace MUDServer
                 return 2;
             }
             exec = new ReadableSQLExecuter();
-            exec.query = "select ";
+            exec.query = "select Type,Amount,ConsumptionType from Consumable where I_Id=?";
+            exec.add_parameter(I_Id);
+            exec.execute_query();
+
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return -1;
+            }
+            if (!exec.HasRows)
+            {
+                Console.WriteLine("Consumable not found!");
+                return -1;
+            }
+            string cons_type = Convert.ToString(exec.result[0][0]);
+            long amount = Convert.ToInt64(exec.result[0][1]);
+            if (Convert.ToBoolean(exec.result[0][2]) != consumation_type)
+            {
+                return 3;
+            }
+
             return 0;
         }
         private bool consumeHealth(long amount)
