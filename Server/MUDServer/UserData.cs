@@ -518,6 +518,46 @@ namespace MUDServer
 
             return 0;
         }
+        private bool consumeHealth(long amount, long I_Id)
+        {
+            ReadableSQLExecuter exec =new ReadableSQLExecuter();
+            exec.query = "update `Character` set Health = case when Health+=? <MaxHealth then Health+? else MaxHealth where `Character`.C_Id=? ";
+            exec.add_parameter(amount);
+            exec.add_parameter(amount);
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
+        private bool consumeArmor(long amount, long I_Id, DateTime duration)
+        {
+            ReadableSQLExecuter exec = new ReadableSQLExecuter();
+            exec.query = "update `Character` set Health = case when Health+=? <MaxHealth then Health+? else MaxHealth where `Character`.C_Id=? ";
+            exec.add_parameter(amount);
+            exec.add_parameter(amount);
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool usePoison(long amount, long I_Id, DateTime duration)
+        {
+
+        }
     }
 }
