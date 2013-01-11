@@ -57,6 +57,11 @@ namespace MUDServer
             }
             else if (command.ToLower().StartsWith("trinke "))
             {
+                trinken(command);
+            }
+            else if (command.ToLower().StartsWith("esse "))
+            {
+                essen(command);
             }
             else if (command.StartsWith("nimm "))
             {
@@ -213,6 +218,64 @@ namespace MUDServer
         }
         private void trinken(string command)
         {
+            if (command.StartsWith("trinke "))
+            {
+                command = command.Remove(0,7);
+            }
+            command = command.Trim();
+            int status = _user_data.consume(command, true);
+            Console.WriteLine(status);
+            if (status == 0)
+            {
+                write("Lecker!\n");
+            }
+            else if (status == 1)
+            {
+                write("Ich habe \"" + command + "\" nicht gefunden\n");
+            }
+            else if (status == 2)
+            {
+                write("Das zu essen waere nicht gerade angenehm.\n");
+            }
+            else if (status == 3)
+            {
+                write("Willst du das vieleicht nicht lieber essen?");
+            }
+            else
+            {
+                write("Es sit nicht dein Fehler. Es ist meiner. Ich schäme mich :( .");
+            }
+        }
+        private void essen(string command)
+        {
+            if (command.StartsWith("esse "))
+            {
+                command = command.Remove(0, 5);
+            }
+            command = command.Trim();
+            int status = _user_data.consume(command, false);
+            Console.WriteLine(status);
+            if (status == 0)
+            {
+                write("Lecker!\n");
+            }
+            else if (status == 1)
+            {
+                write("Ich habe \""+command+"\" nicht gefunden\n");
+            }
+            else if(status==2)
+            {
+                write("Das zu essen waere nicht gerade angenehm.\n");
+            }
+            else if (status == 3)
+            {
+                write("Willst du das vieleicht nicht lieber trinken?");
+            }
+            else
+            {
+                write("Es sit nicht dein Fehler. Es ist meiner. Ich schäme mich :( .");
+            }
+
         }
         private void nimm(string command)
         {

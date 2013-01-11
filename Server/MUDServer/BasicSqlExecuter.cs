@@ -10,13 +10,18 @@ namespace MUDServer
 {
     public abstract class BasicSQLExecuter
     {
+        public static Config conf;
+
         public bool error = false;
         public string error_string = "";
         public string query = "";
 
         protected List<OdbcParameter> _parameters = new List<OdbcParameter>();
 
-
+        static BasicSQLExecuter()
+        {
+            conf = new Config();
+        }
 
         public void add_parameter(long value)
         {
@@ -50,7 +55,9 @@ namespace MUDServer
 
         protected virtual OdbcConnection get_connection()
         {
-            return new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=mrknister.justdied.com; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;");
+            OdbcConnection conn = new OdbcConnection("DRIVER={MySQL ODBC 5.2w Driver}; SERVER=mrknister.justdied.com; DATABASE=MUDEngine; UID=mudengineer;PWD=hAWFYe2YsNHXZrtF;");
+            
+            return conn;
         }
         public abstract bool execute_query();
 
