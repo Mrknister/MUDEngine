@@ -83,6 +83,7 @@ namespace MUDServer
             {
                 write("Ich habe dich nicht verstanden.\n");
             }
+            write(">");
         }
         private void inventar(string command)
         {
@@ -109,6 +110,10 @@ namespace MUDServer
             {
                 write("Du bist tod!\n");
                 _user_data.died();
+            }
+            else
+            {
+                write("Du hast noch " + Convert.ToString(_user_data.Health) + " Lebenspunkte\n");
             }
             if (monster_lost == -1)
             {

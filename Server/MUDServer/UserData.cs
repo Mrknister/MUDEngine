@@ -546,6 +546,28 @@ namespace MUDServer
             {
                 return 3;
             }
+            if (cons_type == "Health")
+            {
+                if (!consumeHealth(amount))
+                {
+                    return -1;
+                }
+            }
+            else if (cons_type == "PhRes")
+            {
+                if (!consumeArmor(amount,I_Id))
+                {
+                    return -1;
+                }
+            }
+            else if (cons_type == "Damage")
+            {
+                if (!consumeArmor(amount, I_Id))
+                {
+                    return -1;
+                }
+            }
+
 
             return 0;
         }
@@ -599,13 +621,26 @@ namespace MUDServer
                 return true;
             }
         }
-        private bool usePoison(long amount, DateTime duration)
+        private bool consumeDamage(long amount, long I_Id)
         {
 
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
-            exec.query = "update `Character` set Health = case when Health+=? <MaxHealth then Health+? else MaxHealth where `Character`.C_Id=? ";
+            exec.query = "select Name from `Item` where I_Id=?";
+            exec.add_parameter(I_Id);
+            exec.execute_query();
+            string Name = Convert.ToString(exec.result[0][1]);
+
+            exec = new ReadableSQLExecuter();
+            exec.query = "select now()+Duration from `Consumable` where I_Id=?";
+            exec.add_parameter(I_Id);
+            exec.execute_query();
+            DateTime Buffduration = Convert.ToDateTime(exec.result[0][1]);
+
+            exec = new ReadableSQLExecuter();
+            exec.query = "insert into `Buff`(Name, Amount, Type, RunsOutAt, C_Id) values(?,?,1,?,?) ";
+            exec.add_parameter(Name);
             exec.add_parameter(amount);
-            exec.add_parameter(amount);
+            exec.add_parameter(Convert.ToString(Buffduration));
             exec.add_parameter(C_Id);
             exec.execute_query();
             if (exec.error)

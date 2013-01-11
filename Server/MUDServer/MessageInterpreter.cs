@@ -52,6 +52,7 @@ namespace MUDServer
                     status = 0;
                     break;
             }
+            write(">");
         }
 
         private void changeStatus(uint status)
