@@ -87,7 +87,7 @@ namespace MUDServer
             {
                 write("Ich habe dich nicht verstanden.\n");
             }
-            write(">");
+            
         }
         private void inventar(string command)
         {

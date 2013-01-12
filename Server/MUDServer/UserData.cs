@@ -562,7 +562,7 @@ namespace MUDServer
             }
             else if (cons_type == "Damage")
             {
-                if (!consumeArmor(amount, I_Id))
+                if (!consumeDamage(amount, I_Id))
                 {
                     return -1;
                 }
@@ -596,13 +596,19 @@ namespace MUDServer
             exec.query = "select Name from `Item` where I_Id=?";
             exec.add_parameter(I_Id);
             exec.execute_query();
-            string Name = Convert.ToString(exec.result[0][1]);
+            string Name = Convert.ToString(exec.result[0][0]);
 
             exec = new ReadableSQLExecuter();
             exec.query = "select now()+Duration from `Consumable` where I_Id=?";
             exec.add_parameter(I_Id);
             exec.execute_query();
-            DateTime Buffduration = Convert.ToDateTime(exec.result[0][1]); 
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            
+            double Buffduration = Convert.ToDouble(exec.result[0][0]); 
 
              exec = new ReadableSQLExecuter();
             exec.query = "insert into `Buff`(Name, Amount, Type, RunsOutAt, C_Id) values(?,?,2,?,?) ";
@@ -628,13 +634,25 @@ namespace MUDServer
             exec.query = "select Name from `Item` where I_Id=?";
             exec.add_parameter(I_Id);
             exec.execute_query();
-            string Name = Convert.ToString(exec.result[0][1]);
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            
+            string Name = Convert.ToString(exec.result[0][0]);
 
             exec = new ReadableSQLExecuter();
             exec.query = "select now()+Duration from `Consumable` where I_Id=?";
             exec.add_parameter(I_Id);
             exec.execute_query();
-            DateTime Buffduration = Convert.ToDateTime(exec.result[0][1]);
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+
+            double Buffduration = Convert.ToDouble(exec.result[0][0]); 
 
             exec = new ReadableSQLExecuter();
             exec.query = "insert into `Buff`(Name, Amount, Type, RunsOutAt, C_Id) values(?,?,1,?,?) ";
