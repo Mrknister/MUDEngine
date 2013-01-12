@@ -7,5 +7,7 @@ namespace MUDServer
 {
     class DataContainer
     {
+        public CharacterData c_data;
+        public Room r_data;
     }
 }
