@@ -8,6 +8,7 @@ namespace MUDServer
     class Item
     {
 
+        DataContainer container;
 
 
 
@@ -17,7 +18,7 @@ namespace MUDServer
         {
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
             exec.query = "select `Item`.I_Id,`Item`.Category,`BelongsTo`.Amount from `Item`,`BelongsTo` where `BelongsTo`.I_Id=`Item`.I_Id and `BelongsTo`.C_Id=? and `Item`.Name=?";
-            exec.add_parameter(C_Id);
+            exec.add_parameter(container.c_data.C_Id);
             exec.add_parameter(item_name);
             exec.execute_query();
             if (exec.error)
@@ -88,7 +89,7 @@ namespace MUDServer
             exec.query = "update `Character` set Health = case when Health+=? <MaxHealth then Health+? else MaxHealth where `Character`.C_Id=? ";
             exec.add_parameter(amount);
             exec.add_parameter(amount);
-            exec.add_parameter(C_Id);
+            exec.add_parameter(container.c_data.C_Id);
             exec.execute_query();
             if (exec.error)
             {
@@ -125,7 +126,7 @@ namespace MUDServer
             exec.add_parameter(Name);
             exec.add_parameter(amount);
             exec.add_parameter(Convert.ToString(Buffduration));
-            exec.add_parameter(C_Id);
+            exec.add_parameter(container.c_data.C_Id);
             exec.execute_query();
             if (exec.error)
             {
@@ -169,7 +170,7 @@ namespace MUDServer
             exec.add_parameter(Name);
             exec.add_parameter(amount);
             exec.add_parameter(Convert.ToString(Buffduration));
-            exec.add_parameter(C_Id);
+            exec.add_parameter(container.c_data.C_Id);
             exec.execute_query();
             if (exec.error)
             {

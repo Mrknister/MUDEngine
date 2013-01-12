@@ -7,5 +7,6 @@ namespace MUDServer
 {
     class Room
     {
+        public long R_Id;
     }
 }
