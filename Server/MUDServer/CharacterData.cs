@@ -8,6 +8,7 @@ namespace MUDServer
     class CharacterData
     {
         DataContainer container;
+        container->R_Id;
         
         public long C_Id = 0;
         public string Name;
@@ -243,6 +244,19 @@ namespace MUDServer
              saveAttributes();
              return M_Health;
          }
+         public bool died()
+        {
+            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
+            exec.query = "update `Character` set Health=MaxHealth, R_Id=1 where C_Id=?";
+            exec.add_parameter(C_Id);
+            exec.execute_query();
+            if (exec.error)
+            {
+                Console.WriteLine(exec.error_string);
+                return false;
+            }
+            return true;
+        }
 
     }
         

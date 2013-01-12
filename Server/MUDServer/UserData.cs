@@ -281,7 +281,7 @@ namespace MUDServer
                 to_return.Add(message);
             }
             return to_return;
-        }
+        }// wird umprogrammiert
 
         public bool selectCharacter(string name)
         {
@@ -299,7 +299,7 @@ namespace MUDServer
             this.Name = name;
 
             return true;
-        }
+        }// andere Klasse
         public bool login(string name, string password)
         {
             ReadableSQLExecuter sql = new ReadableSQLExecuter();
@@ -322,7 +322,7 @@ namespace MUDServer
             U_Id = Convert.ToInt64(sql.result[0][0]);
 
             return true;
-        }
+        }// andere Klasse
         
         public bool createCharacter(string name)
         {
@@ -351,7 +351,7 @@ namespace MUDServer
                 return false;
             }
             return true;
-        }
+        }// andere Klasse
 
         public bool register(string name, string password)
         {
@@ -373,7 +373,7 @@ namespace MUDServer
                 return false;
             }
             return true;
-        }
+        }// andere Klasse
 
         private bool check_register(string name, string password)
         {
@@ -404,7 +404,7 @@ namespace MUDServer
                 return false;
             }
             return true;
-        }
+        }// andere Klasse
         public int equip(string to_equip)
         {
             Console.WriteLine("\"" + to_equip + "\"");
@@ -460,7 +460,7 @@ namespace MUDServer
                 return -1;
             }
             return 0;
-        }
+        }// wird umprogrammiert
         private bool unequip_armor(long I_Id) // it is assumed that the user ownes this item
         {
             // find out if an armor of this type is allready equipped
@@ -590,7 +590,6 @@ namespace MUDServer
                 return true;
             }
         }
-
         private bool consumeArmor(long amount, long I_Id)
         {
             ReadableSQLExecuter exec = new ReadableSQLExecuter();
