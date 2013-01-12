@@ -7,5 +7,6 @@ namespace MUDServer
 {
     class Monster
     {
+        DataContainer container;
     }
 }

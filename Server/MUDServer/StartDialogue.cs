@@ -11,23 +11,41 @@ namespace MUDServer
         public StartDialogue(UserDialogue.WriteMethod write)
         {
             this.write = write;
+            writeStartMessage();
         }
-        public override void interpretMessage(string message)
+        public override bool interpretMessage(string message)
         {
+            message=message.Trim().ToLower();
+            if (message == "login")
+            {
+                next_dialogue_type=true;
+                return true;
+            }
+            else if (message == "neu")
+            {
+                return true;
+            }
+            else
+            {
+                write("Ich hae dich nicht verstanden.\n");
+                writeStartMessage();
+                return false;
+            }
         }
         public override UserDialogue getNextDialogue()
         {
             if (next_dialogue_type)
             {
-                return new RegisterDialogue(write);
+                return new LoginDialogue(write);
             }
             else
             {
-                return new LoginDialogue(write);
+                return new RegisterDialogue(write);
             }
         }
         private void writeStartMessage()
         {
+            write("Wenn du ein neuer Nutzer bist tippe 'neu' ein. \nWenn du schon mal hier warst, tippe 'login' ein.\n");
         }
     }
 }
