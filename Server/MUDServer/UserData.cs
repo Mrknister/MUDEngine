@@ -11,7 +11,10 @@ namespace MUDServer
 {
     class UserData
     {
+        DataContainer *container;
 
+        
+      
         public long U_Id = 0;
         public long C_Id = 0;
         public long R_Id;
