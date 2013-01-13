@@ -167,27 +167,7 @@ namespace MUDServer
             {
                 ItemDamage = 0;
             }
-        }/*
-        public bool saveAttributes()
-        {
-            UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
-            exec.query = "update `Character` set Name=?,Money=?,Health=?,Damage=?,PhRes=?,R_Id=? where C_Id=?";
-            exec.add_parameter(Name);
-            exec.add_parameter(Money);
-            exec.add_parameter(Health);
-            exec.add_parameter(Damage);
-            exec.add_parameter(PhRes);
-            exec.add_parameter(container.r_data.R_Id);
-            exec.add_parameter(C_Id);
-            exec.execute_query();
-            if (exec.error)
-            {
-                Console.WriteLine(exec.error_string);
-                return false;
-            }
-            return true;
-
-        }*/
+        }
         public void takeDamage(long amount)
         {
             amount -= PhRes;
@@ -218,11 +198,9 @@ namespace MUDServer
         }
         public void addBuff(string name,string runsoutat,long amount,long type)
         {
-
-
             UnreadableSQLExecuter exec = new UnreadableSQLExecuter();
             exec.query = "insert into `Buff`(Name, Amount, Type, RunsOutAt, C_Id) values(?,?,?,?,?) ";
-            exec.add_parameter(Name);
+            exec.add_parameter(name);
             exec.add_parameter(amount);
             exec.add_parameter(type);
             exec.add_parameter(runsoutat);

@@ -259,7 +259,7 @@ namespace MUDServer
             }
             else if (buff_type == "Damage")
             {
-                container.c_data.addBuff(Name, runsoutat, buff_amount, 2);
+                container.c_data.addBuff(Name, runsoutat, buff_amount, 1);
             }
             else
             {
