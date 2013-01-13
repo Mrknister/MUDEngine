@@ -13,15 +13,15 @@ namespace MUDServer
         NetworkStream _stream;
         String client_message = "";
         byte[] bytemessage = new byte[256];
-        MessageInterpreter _interpreter;
+        UserDialogue dialogue;
         
         public Connection(TcpClient client)
         {
             Console.WriteLine("A client connected");
             _client = client;
             _stream = client.GetStream();
-            MessageInterpreter.writemethod wm = new MessageInterpreter.writemethod(write_message);
-            _interpreter = new MessageInterpreter(wm);
+            UserDialogue.WriteMethod wm = new UserDialogue.WriteMethod(write_message);
+            dialogue = new StartDialogue(wm);
         }
         public void Work()
         {
@@ -36,7 +36,12 @@ namespace MUDServer
                     {
                         string tmp = client_message.Substring(0, client_message.IndexOf('\n'));
                         client_message = client_message.Remove(0, client_message.IndexOf('\n') + 1);
-                        _interpreter.interpretMessage(tmp);
+
+                        if (dialogue.interpretMessage(tmp))
+                        {
+                            dialogue = dialogue.getNextDialogue();
+                        }
+
                     }
                     
                 }

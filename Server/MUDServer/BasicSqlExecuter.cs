@@ -70,7 +70,6 @@ namespace MUDServer
             string connection_string="DRIVER={MySQL ODBC 5.2w Driver}; DATABASE=MUDEngine;";
             
             connection_string += "SERVER=" + conf.DatabaseHost+"; UID="+conf.DatabaseUser+"; PWD="+conf.DatabasePassword+";";
-            Console.WriteLine(connection_string);
             OdbcConnection conn = new OdbcConnection(connection_string);
 
             
