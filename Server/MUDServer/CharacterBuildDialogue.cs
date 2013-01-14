@@ -11,6 +11,7 @@ namespace MUDServer
         public CharacterBuildDialogue(UserDialogue.WriteMethod write,long U_Id)
         {
             this.U_Id = U_Id;
+            this.write = write;
             writeStartMessage();
         }
         public override bool interpretMessage(string message)
