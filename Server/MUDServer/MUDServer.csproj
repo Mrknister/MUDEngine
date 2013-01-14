@@ -57,7 +57,6 @@
     <Compile Include="CommandInterpreter.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DataContainer.cs" />
-    <Compile Include="EnviromentData.cs" />
     <Compile Include="GameLoopDialogue.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Gehen.cs" />
@@ -76,7 +75,6 @@
     <Compile Include="Statistiken.cs" />
     <Compile Include="TakeableGameObject.cs" />
     <Compile Include="UnreadableSQLExecuter.cs" />
-    <Compile Include="UserData.cs" />
     <Compile Include="UserDialogue.cs" />
   </ItemGroup>
   <ItemGroup>
