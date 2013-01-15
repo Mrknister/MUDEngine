@@ -1,7 +1,5 @@
 databaseuser = mudengineer
-
 databasepassword = hAWFYe2YsNHXZrtF
-
-databasehost =    mrknister.justdied.com
+databasehost = localhost
 
 #das ist ein zu ignorierender kommentar

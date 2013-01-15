@@ -48,11 +48,24 @@ namespace MUDServer
         {
             if (container.r_data.changeRoom(direction))
             {
-                write(container.r_data.Name + "\n\n" + container.r_data.Description + "\n");
+                roomdescription();
             }
             else
             {
                 write("Hier geht es nicht weiter.\n");
+            }
+        }
+        private void roomdescription()
+        {
+            write(container.r_data.Name + "\n\n" + container.r_data.Description + "\n");
+            List<Monster> tmp = Monster.loadMonsters(ref container);
+            if (tmp != null)
+            {
+                write("Monster:\n");
+                foreach (Monster m in tmp)
+                {
+                    write(" " + m.Name + "\n");
+                }
             }
         }
     }

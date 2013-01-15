@@ -25,6 +25,9 @@ namespace MUDServer
             {
                 Console.WriteLine("Failed to read the Config file.");
             }
+            Console.WriteLine(conf.DatabaseHost);
+            Console.WriteLine(conf.DatabasePassword);
+            Console.WriteLine(conf.DatabaseUser);
         }
 
         public void add_parameter(long value)

@@ -1,3 +1,5 @@
+create Database MUDEngine;
+use MUDEngine;
 -- phpMyAdmin SQL Dump
 -- version 3.5.5
 -- http://www.phpmyadmin.net

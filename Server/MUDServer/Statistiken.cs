@@ -29,6 +29,8 @@ namespace MUDServer
         }
         private void showStats()
         {
+
+            container.c_data.calculateItemStats();
             container.c_data.calculateBuffs();
             write("Euer Name ist: " + container.c_data.Name +
                 "\n" + "Euere maximale Lebensenergie ist: " + Convert.ToString(container.c_data.MaxHealth) +

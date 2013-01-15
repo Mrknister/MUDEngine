@@ -16,6 +16,7 @@ namespace MUDServer
             commands.Add(new Statistiken(write, cont));
             commands.Add(new Nehmen(write, cont));
             commands.Add(new Benutzen(write, cont));
+            commands.Add(new Hilfe(write, cont));
         }
         public void interpretCommand(string userinput)
         {

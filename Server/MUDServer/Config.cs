@@ -23,19 +23,22 @@ namespace MUDServer
             {
                 string FileLine;
                 FileLine = ConfigFiles.ReadLine();
-                FileLine = FileLine.Replace(" ", "");
+                FileLine = FileLine.Trim();
 
-                if (FileLine.ToLower().StartsWith("databaseuser=") == true)
+                if (FileLine.ToLower().StartsWith("databaseuser"))
                 {
                     DatabaseUser = GetValue(FileLine);
                 }
-                if (FileLine.ToLower().StartsWith("databasepassword=") == true)
+                if (FileLine.ToLower().StartsWith("databasepassword") )
                 {
                     DatabasePassword = GetValue(FileLine);
                 }
-                if (FileLine.ToLower().StartsWith("databasehost=") == true)
+                if (FileLine.ToLower().StartsWith("databasehost"))
                 {
                     DatabaseHost = GetValue(FileLine);
+                }
+                else
+                {
                 }
             }
             return true;
@@ -45,13 +48,13 @@ namespace MUDServer
         private string GetValue(string line)                            // Method to get the values for the Database out of the configfile.
         {
             int Found;
-            string value = line;
-
+            
             Found = line.IndexOf("=");
-            value = value.Remove(0, Found + 1);
-            Console.WriteLine(value);
+            line = line.Remove(0, Found + 1);
+            line = line.Trim();
+            Console.WriteLine(line);
 
-            return value;
+            return line;
 
         }
     }

@@ -170,6 +170,9 @@ namespace MUDServer
         }
         public void takeDamage(long amount)
         {
+            calculateBuffs();
+            calculateItemStats();
+
             amount -= PhRes;
             if (amount < 1)
                 amount = 1;
@@ -227,6 +230,7 @@ namespace MUDServer
                 Console.WriteLine(exec.error_string);
                 return false;
             }
+            loadAttributes();
             return true;
         }
 

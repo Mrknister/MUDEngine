@@ -92,7 +92,9 @@ namespace MUDServer
         }
         public bool attack()
         {
+            container.c_data.calculateItemStats();
             container.c_data.calculateBuffs();
+
             Health -= container.c_data.Damage + container.c_data.BuffDamage+container.c_data.ItemDamage - PhRes;
 
             UnreadableSQLExecuter u_exec = new UnreadableSQLExecuter();

@@ -27,6 +27,11 @@ namespace MUDServer
             else if (status == 1)
             {
                 Password = message;
+                if (Password.Length < 8)
+                {
+                    write("Dein Passwort muss mindestens 8 Buchstaben enthalten.\nDenke dir ein neues aus.\n");
+                    return false;
+                }
                 write("Gebe es bitte erneut ein");
                 status++;
             }
@@ -42,11 +47,12 @@ namespace MUDServer
 
                 if (register())
                 {
+                    write("Registrierung erfolgreich!\n");
                     return true;
                 }
                 else
                 {
-                    write("Der Nutzername existiert bereits");
+                    write("Der Nutzername existiert bereits\nDenke dir einen neuen aus.\n");
                     writeStartMessage();
                     status = 0;
                 }
@@ -107,15 +113,16 @@ namespace MUDServer
             //check if name already exist
             exec.add_parameter(name);
             exec.execute_query();
-            if (exec.HasRows)
-            {
-                return false;
-            }
             if (exec.error)
             {
                 Console.WriteLine(exec.error_string);
                 return false;
             }
+            if (exec.HasRows)
+            {
+                return false;
+            }
+            
             return true;
         }
     }

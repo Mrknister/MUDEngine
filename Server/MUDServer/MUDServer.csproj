@@ -54,12 +54,12 @@
     <Compile Include="CharacterSelectionDialogue.cs" />
     <Compile Include="CommandEngine.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="CommandInterpreter.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DataContainer.cs" />
     <Compile Include="GameLoopDialogue.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Gehen.cs" />
+    <Compile Include="Hilfe.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="LoginDialogue.cs" />
     <Compile Include="Monster.cs" />
@@ -70,7 +70,6 @@
     <Compile Include="RegisterDialogue.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Server.cs" />
-    <Compile Include="MessageInterpreter.cs" />
     <Compile Include="StartDialogue.cs" />
     <Compile Include="Statistiken.cs" />
     <Compile Include="TakeableGameObject.cs" />
