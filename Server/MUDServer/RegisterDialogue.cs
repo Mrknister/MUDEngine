@@ -26,7 +26,7 @@ namespace MUDServer
             }
             else if (status == 1)
             {
-                Password = message.Trim();
+                Password = message;
                 write("Gebe es bitte erneut ein");
                 status++;
             }
@@ -43,7 +43,6 @@ namespace MUDServer
                 if (register())
                 {
                     return true;
-
                 }
                 else
                 {
@@ -51,7 +50,11 @@ namespace MUDServer
                     writeStartMessage();
                     status = 0;
                 }
-                
+            }
+            else
+            {
+                writeStartMessage();
+                status = 0;
             }
             return false;
         }

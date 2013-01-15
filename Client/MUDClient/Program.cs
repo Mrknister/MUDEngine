@@ -66,9 +66,6 @@ namespace MUDClient
                 Environment.Exit(0);
             }
 
-
-
-
         }
 
 

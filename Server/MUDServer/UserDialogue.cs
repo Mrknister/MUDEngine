@@ -9,7 +9,7 @@ namespace MUDServer
     {
         public delegate void WriteMethod(string message);
         protected WriteMethod write;
-        public virtual bool interpretMessage(string message);
-        public virtual UserDialogue getNextDialogue();
+        public abstract bool interpretMessage(string message);
+        public abstract UserDialogue getNextDialogue();
     }
 }
